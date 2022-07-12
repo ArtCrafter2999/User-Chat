@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "ConnectionTest/1.0.0": {
+        "dependencies": {
+          "NetModelsLibrary": "1.0.0"
+        },
+        "runtime": {
+          "ConnectionTest.dll": {}
+        }
+      },
+      "NetModelsLibrary/1.0.0": {
+        "runtime": {
+          "NetModelsLibrary.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ConnectionTest/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NetModelsLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

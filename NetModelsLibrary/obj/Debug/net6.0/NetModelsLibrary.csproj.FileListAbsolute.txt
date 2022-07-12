@@ -1,0 +1,12 @@
+D:\Projects\UserServerClientChat\NetModelsLibrary\bin\Debug\net6.0\NetModelsLibrary.deps.json
+D:\Projects\UserServerClientChat\NetModelsLibrary\bin\Debug\net6.0\NetModelsLibrary.dll
+D:\Projects\UserServerClientChat\NetModelsLibrary\bin\Debug\net6.0\NetModelsLibrary.pdb
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.csproj.AssemblyReference.cache
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.AssemblyInfoInputs.cache
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.AssemblyInfo.cs
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.csproj.CoreCompileInputs.cache
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.dll
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\refint\NetModelsLibrary.dll
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.pdb
+D:\Projects\UserServerClientChat\NetModelsLibrary\obj\Debug\net6.0\ref\NetModelsLibrary.dll
