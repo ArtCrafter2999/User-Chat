@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj",
+      "projectUniqueName": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
       "projectName": "NetModelsLibrary",
-      "projectPath": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj",
+      "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\obj\\",
+      "outputPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

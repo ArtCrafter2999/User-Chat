@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iqKk8LT0WU0vzcbyqiedv98JmKncrfIrGdqchGdmBByfrxX3Y1JjwLYz34lL7X7nj5M8ECyjZ4FIeJgVcQbDAg==",
+  "dgSpecHash": "LsOBvKH8tQobecUcJmzAuvxReTojUakxdme1cnxP4IjNOjM8tQkgyjlYpAeXWeCohU1Ff7MJrDcMLW53bQnO/w==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\UserServerClientChat\\Server\\Server.csproj",
+  "projectFilePath": "D:\\Projects\\User-Chat\\Server\\Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

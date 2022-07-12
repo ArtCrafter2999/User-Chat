@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kN/TE0OljIleXPeeOXOv5WfNByyVJymQdV8+PLvnYgA3vszTlz0EAi7QrMye1ltpFTgAZpccAZjyU+pfS9ekrA==",
+  "dgSpecHash": "pWmtbtI3ydaEHUf+w+ExZWLW334G7wgw+SakPV0G1B8emPFEpAmBa3QTWYpRzzHVO9nnfVyPoyCpeDdA6UJO8g==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj",
+  "projectFilePath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

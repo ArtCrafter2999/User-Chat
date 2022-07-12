@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\UserServerClientChat\\ConnectionTest\\ConnectionTest.csproj",
+      "projectUniqueName": "D:\\Projects\\User-Chat\\ConnectionTest\\ConnectionTest.csproj",
       "projectName": "ConnectionTest",
-      "projectPath": "D:\\Projects\\UserServerClientChat\\ConnectionTest\\ConnectionTest.csproj",
+      "projectPath": "D:\\Projects\\User-Chat\\ConnectionTest\\ConnectionTest.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\UserServerClientChat\\ConnectionTest\\obj\\",
+      "outputPath": "D:\\Projects\\User-Chat\\ConnectionTest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -53,8 +53,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
-              "projectPath": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj"
+            "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
+              "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj"
             }
           }
         }

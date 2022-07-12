@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\UserServerClientChat\\Server\\Server.csproj": {}
+    "D:\\Projects\\User-Chat\\Server\\Server.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
+    "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj",
+        "projectUniqueName": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
         "projectName": "NetModelsLibrary",
-        "projectPath": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj",
+        "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\obj\\",
+        "outputPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -58,14 +58,14 @@
         }
       }
     },
-    "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj": {
+    "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj",
+        "projectUniqueName": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
         "projectName": "ServerDatabase",
-        "projectPath": "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj",
+        "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\UserServerClientChat\\ServerDatabase\\obj\\",
+        "outputPath": "D:\\Projects\\User-Chat\\ServerDatabase\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -118,14 +118,14 @@
         }
       }
     },
-    "D:\\Projects\\UserServerClientChat\\Server\\Server.csproj": {
+    "D:\\Projects\\User-Chat\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\UserServerClientChat\\Server\\Server.csproj",
+        "projectUniqueName": "D:\\Projects\\User-Chat\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "D:\\Projects\\UserServerClientChat\\Server\\Server.csproj",
+        "projectPath": "D:\\Projects\\User-Chat\\Server\\Server.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\UserServerClientChat\\Server\\obj\\",
+        "outputPath": "D:\\Projects\\User-Chat\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -142,11 +142,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
-                "projectPath": "D:\\Projects\\UserServerClientChat\\NetModelsLibrary\\NetModelsLibrary.csproj"
+              "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
+                "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj"
               },
-              "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj": {
-                "projectPath": "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj"
+              "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
+                "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
               }
             }
           }

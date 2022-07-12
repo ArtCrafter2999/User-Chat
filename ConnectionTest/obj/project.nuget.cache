@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ADVSweDS/HBd7rNZLfEJvlXOKLsKNvC/7TUr7XKGKTFsHHgBSDEHxQuf2/8p9fT1hA4qH2YRBm0d7ncHRiBL1Q==",
+  "dgSpecHash": "up+MICcwmf0AzefRyHnbsUDH7bWLNg2XzsHYK9mbbc2R0aFzF5MeS/UC4yOeEoBTouL17BEn6yDO3ZbVGtucXQ==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\UserServerClientChat\\ConnectionTest\\ConnectionTest.csproj",
+  "projectFilePath": "D:\\Projects\\User-Chat\\ConnectionTest\\ConnectionTest.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

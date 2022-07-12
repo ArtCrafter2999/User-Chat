@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj": {}
+    "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj": {
+    "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj",
+        "projectUniqueName": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
         "projectName": "ServerDatabase",
-        "projectPath": "D:\\Projects\\UserServerClientChat\\ServerDatabase\\ServerDatabase.csproj",
+        "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\UserServerClientChat\\ServerDatabase\\obj\\",
+        "outputPath": "D:\\Projects\\User-Chat\\ServerDatabase\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
