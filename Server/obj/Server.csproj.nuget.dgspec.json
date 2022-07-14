@@ -94,9 +94,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "EntityFramework": {
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[6.4.4, )"
+              "version": "[6.0.7, )"
             }
           },
           "imports": [

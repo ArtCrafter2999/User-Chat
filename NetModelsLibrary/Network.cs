@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using NetModelsLibrary.Models;
 
 namespace NetModelsLibrary
 {
@@ -18,10 +19,9 @@ namespace NetModelsLibrary
 
         public readonly Regex FileRegEx = new Regex(@"([^\\]+)\.([^\.]+$)");
 
-        public void ReadFile()
+        public string ReadFile(string FullName, FileInfoModel Info)
         {
-            var Info = ReadObject<FileInfoModel>();
-            using (var Fstream = new FileStream(Info.Title + "."+Info.Format, FileMode.CreateNew, FileAccess.Write))
+            using (var Fstream = new FileStream(FullName, FileMode.CreateNew, FileAccess.Write))
             {
                 bool IsLast = false;
                 do
@@ -31,11 +31,11 @@ namespace NetModelsLibrary
                     IsLast = model.PackageIndex == Info.PackageCount - 1;
                 } while (!IsLast);
             }
+            return FullName;
         }
 
         public void WriteFile(string Filepath)
         {
-            WriteObject(new RequestInfoModel() { Type = RequestType.File });
             using (var Fstream = new FileStream(Filepath, FileMode.Open, FileAccess.Read))
             {
                 int PackcagesCount = (int)(Fstream.Length / 1024);
@@ -44,7 +44,7 @@ namespace NetModelsLibrary
                 WriteObject(new FileInfoModel() 
                 {
                     DataSize = Fstream.Length,
-                    Title = match.Groups[1].Value,
+                    Name = match.Groups[1].Value,
                     Format = match.Groups[2].Value,
                     PackageCount = PackcagesCount
                 });

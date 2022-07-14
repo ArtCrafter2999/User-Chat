@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using NetModelsLibrary;
 using System.Xml;
+using NetModelsLibrary.Models;
 #pragma warning disable SYSLIB0006
 
 namespace Server
@@ -16,14 +17,18 @@ namespace Server
 
     public class ClientObject
     {
-        public UserModel? User { get; set; }
+        public int? UserId { get; set; }
         public TcpClient client;
-        Network? network = null;
-        NetworkStream? stream = null;
+        public Network network;
+        NetworkStream stream;
+        public DataBaseHandler handler;
         
         public ClientObject(TcpClient tcpClient)
         {
             client = tcpClient;
+            stream = client.GetStream();
+            network = new Network(stream);
+            handler = new DataBaseHandler(this); 
         }
         private Thread? Thread = null;
         public void Stop()
@@ -35,29 +40,26 @@ namespace Server
             Thread = new Thread(new ThreadStart(Process));
             Thread.Start();
         }
-
         public void Process()
         {
             try
             {
                 Console.WriteLine("Unknown User had connected successfully");
-                stream = client.GetStream();
-                network = new Network(stream);
                 if (stream != null)
                 {
                     while (true)
                     {
-                        
                         var Info = network.ReadObject<RequestInfoModel>();
                         switch (Info.Type)
                         {
                             case RequestType.Registration:
-                                Registration(network.ReadObject<RegistrationRequestModel>());
+                                handler.Registration(network.ReadObject<AuthModel>());
                                 break;
-                            case RequestType.Text:
+                            case RequestType.Message:
+                                handler.Message(network.ReadObject<MessageModel>());
                                 break;
-                            case RequestType.File:
-                                network.ReadFile();
+                            case RequestType.Auth:
+                                handler.Auth(network.ReadObject<AuthModel>());
                                 break;
                             default:
                                 break;
@@ -66,10 +68,14 @@ namespace Server
                 }
 
             }
-            catch (ThreadAbortException)
+            catch (OperationFailureExeption ex)
             {
-                if (User != null) Console.WriteLine($"Connection with {User.Name}({User.Id}) had closed");
-                else Console.WriteLine($"Connection with one of Unregistered users had closed");
+                network.WriteObject(new ResoultModel() { RequestType = ex.RequestType, Success = false, Message = ex.Message});
+                Console.WriteLine(ex.Message);
+            }
+            catch (IOException)
+            {
+                Console.WriteLine($"Користувач '{handler.LoginFromUserId(UserId ?? -1)}'({UserId ?? 0}) розірвав з'єднання");
             }
             catch (InvalidOperationException ex)
             {
@@ -87,22 +93,6 @@ namespace Server
                 if (client != null)
                     client.Close();
             }
-        }
-        
-
-        public static IEnumerator<int> IdDistributor()
-        {
-            int id = 1;
-            while (true)
-            {
-                yield return id;
-                id++;
-            }
-        }
-        public void Registration(RegistrationRequestModel model)
-        {
-            User = new UserModel() { Id = IdDistributor().Current, Name = model.Login };
-            Console.WriteLine($"User {User.Name}({User.Id}) had registered");
         }
     }
 }
