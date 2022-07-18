@@ -9,9 +9,9 @@ namespace ServerDatabase
     public class Chat
     {
         public int Id { get; set; }
-        public string Name{ get; set; }
+        public string? Name{ get; set; }
 
         public virtual List<User> Users { get; set; }
-        public virtual List<Chat> Chats { get; set; }
+        public virtual List<Message> Messages { get; set; }
     }
 }

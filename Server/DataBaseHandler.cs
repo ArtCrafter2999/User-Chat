@@ -20,77 +20,92 @@ namespace Server
     {
         private static List<User> UsersOnline = new List<User>();
         private User? _user;
-        public User User { get { if (_user != null) return User; else throw new OperationFailureExeption("Неможливо виконати дану операцію не авторизованному користувачу");} set { _user = value; } }
+        public User User { get { if (_user != null) return User; else throw new OperationFailureExeption("Unable to send message from unregistered user"); } }
         public Network network => Client.network;
         public ClientObject Client;
         public DataBaseHandler(ClientObject client)
         {
             Client = client;
-            if (Client.UserId != null)
-            {
-                using (var db = new ServerDbContext())
-                {
-                    _user = db.Users.Find(Client.UserId);
-                }
-                if (_user == null) Client.UserId = null;
-            }
         }
 
-        public string? LoginFromUserId (int Id)
+        public string? LoginFromUserId(int Id)
         {
+            if (Id == -1) return "unknown";
             User? user;
             using (var db = new ServerDbContext())
             {
                 user = db.Users.Find(Id);
             }
-            return user != null ? user.Login : "невідомо";
+            return user != null ? user.Login : "unknown";
         }
-
+        /// <summary>
+        /// Повертає або екземпляр User або новий User з параметрами unknown
+        /// </summary>
+        /// <returns>Повертає або екземпляр User або новий User з параметрами unknown</returns>
+        public User SafeUserGet()
+        {
+            if (_user != null) return _user;
+            else return new User() { Id = -1, Login = "unknown", Name = "unknown", PasswordMD5 = "unknown" };
+        }
         public void Registration(AuthModel model)
         {
-            Console.WriteLine($"Отриман запит на регістрацію користувача з логіном {model.Login}");
+            Console.WriteLine($"'{model.Login}' registration");
             using (var db = new ServerDbContext())
             {
                 var user = db.Users.Count() > 0? db.Users.Where((u) => u.Login == model.Login).FirstOrDefault() : null;
                 if (user == null)
                 {
-                    network.WriteObject(new ResoultModel() { RequestType = RequestType.Registration, Success = true, Message = "Ви обрали унікальний логін" });
-                    UserDataModel userData = network.ReadObject<UserDataModel>();
-                    db.Users.Add(new User() { Login = model.Login, PasswordMD5 = model.PasswordMD5, Name = userData.Name });
+                    network.WriteObject(new ResoultModel() { RequestType = RequestType.Registration, Success = true, Message = "You picked unique login" });
+                    UserModel userData = network.ReadObject<UserModel>();
+                    _user = new User() { Login = model.Login, PasswordMD5 = model.PasswordMD5, Name = userData.Name };
+                    db.Users.Add(_user);
+                    var chat = new Chat() { Users = new List<User>()};
+                    db.Chats.Add(chat);
                     db.SaveChanges();
+                    var user1 = db.Users.Find(1);
+                    if (user1 != null && user1 != _user)
+                    {
+                        chat.Users.Add(user1);
+                        chat.Users.Add(_user);
+                    }
+                    db.SaveChanges();
+                    
+
                 }
                 else
                 {
-                    throw new OperationFailureExeption($"Логін '{model.Login}' вже існує, запит відхилено");
+                    throw new OperationFailureExeption($"Login '{model.Login}' is alrady exist, request rejected");
                 }
             }
-            network.WriteObject(new ResoultModel() { RequestType = RequestType.Registration, Success = true, Message = "Ви успішно зареєструвалися" });
+            network.WriteObject(new ResoultModel() { RequestType = RequestType.Registration, Success = true, Message = "You registered successfuly" });
+            Console.WriteLine($"'{model.Login}' registration successfuly");
         }
         public void Auth(AuthModel model)
         {
-            Console.WriteLine($"Отриман запит на аутентіфікацю користувача з логіном {model.Login}");
+            Console.WriteLine($"'{model.Login}' authorization");
             using (var db = new ServerDbContext())
             {
                 var user = db.Users.Count() > 0 ? db.Users.Where((u) => u.Login == model.Login).FirstOrDefault() : null;
                 if (user != null && user.PasswordMD5 == model.PasswordMD5)
                 {
-                    User = user;
+                    _user = user;
                 }
                 else
                 {
-                    throw new OperationFailureExeption($"Неправильний логін або пароль (а конкретно {(user == null? "логін" : "пароль")})");
+                    throw new OperationFailureExeption($"Incorrect login or password (а конкретно {(user == null? "логін" : "пароль")})");
                 }
             }
-            network.WriteObject(new ResoultModel() { RequestType = RequestType.Auth, Success = true, Message = "Ви успішно авторизовані" });
+            network.WriteObject(new ResoultModel() { RequestType = RequestType.Auth, Success = true, Message = "You authorized successfuly" });
+            Console.WriteLine($"'{model.Login}' authorization successfuly");
         }
         public void Message(MessageModel model)
         {
-            Console.WriteLine($"Отриман запит на відправлення текстового повідомлення до чату ({model.ChatId}), зміст:\n\n {model.Message}");
+            Console.WriteLine($"'{User.Name}'({User.Id}) > send message > chatid: {model.ChatId};\n content:\n\n {model.Text}");
             try
             {
                 using (var db = new ServerDbContext())
                 {
-                    var message = new Message() { ChatId = model.ChatId, Text = model.Message, User = User };
+                    var message = new Message() { ChatId = model.ChatId, Text = model.Text, User = User };
                     db.Messages.Add(message);
                     db.SaveChanges();
 
@@ -114,7 +129,7 @@ namespace Server
             }
             catch (OperationFailureExeption)
             {
-                throw new OperationFailureExeption("Неможливо відправити повідомлення від незареєстрованого користувача");
+                throw new OperationFailureExeption("Unable to send message from unregistered user");
             }
         }
     }

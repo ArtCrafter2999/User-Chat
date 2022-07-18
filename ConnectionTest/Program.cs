@@ -15,10 +15,10 @@ string Login;
 do
 {
     Login = Read("Login: ", true);
-    string PasswordMD5 = MD5.CreateMD5(Read("Password: ", true));
+    //string PasswordMD5 = MD5.CreateMD5(Read("Password: ", true));
 
     network.WriteObject(new RequestInfoModel(RequestType.Registration));
-    network.WriteObject(new AuthModel() { Login = Login, PasswordMD5 = PasswordMD5 });
+    //network.WriteObject(new AuthModel() { Login = Login, PasswordMD5 = PasswordMD5 });
     response = network.ReadObject<ResoultModel>();
     Console.WriteLine(response.Message);
 } while (response.Success == false);
@@ -26,7 +26,7 @@ do
 {
     string UserName = Read("UserName: ");
 
-    network.WriteObject(new UserDataModel() { Login = Login, Name = UserName });
+    //network.WriteObject(new UserDataModel() { Login = Login, Name = UserName });
     response = network.ReadObject<ResoultModel>();
     Console.WriteLine(response.Message);
 } while (response.Success == false);

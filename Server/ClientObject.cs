@@ -12,23 +12,23 @@ namespace Server
 {
     public class CantDeserializeExeption : Exception
     {
-        public CantDeserializeExeption(Type type):base($"Can't Deserialize Model. Type: '{type}'") { }
+        public CantDeserializeExeption(Type type) : base($"Can't Deserialize Model. Type: '{type}'") { }
     }
 
     public class ClientObject
     {
-        public int? UserId { get; set; }
+        public int? UserId => handler?.User.Id;
         public TcpClient client;
         public Network network;
         NetworkStream stream;
         public DataBaseHandler handler;
-        
+
         public ClientObject(TcpClient tcpClient)
         {
             client = tcpClient;
             stream = client.GetStream();
             network = new Network(stream);
-            handler = new DataBaseHandler(this); 
+            handler = new DataBaseHandler(this);
         }
         private Thread? Thread = null;
         public void Stop()
@@ -49,42 +49,52 @@ namespace Server
                 {
                     while (true)
                     {
-                        var Info = network.ReadObject<RequestInfoModel>();
-                        switch (Info.Type)
+                        try
                         {
-                            case RequestType.Registration:
-                                handler.Registration(network.ReadObject<AuthModel>());
-                                break;
-                            case RequestType.Message:
-                                handler.Message(network.ReadObject<MessageModel>());
-                                break;
-                            case RequestType.Auth:
-                                handler.Auth(network.ReadObject<AuthModel>());
-                                break;
-                            default:
-                                break;
+                            var Info = network.ReadObject<RequestInfoModel>();
+                            switch (Info.Type)
+                            {
+                                case RequestType.Registration:
+                                    handler.Registration(network.ReadObject<AuthModel>());
+                                    break;
+                                case RequestType.Message:
+                                    handler.Message(network.ReadObject<MessageModel>());
+                                    break;
+                                case RequestType.Auth:
+                                    handler.Auth(network.ReadObject<AuthModel>());
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        catch (OperationFailureExeption ex)
+                        {
+                            network.WriteObject(new ResoultModel() { RequestType = ex.RequestType, Success = false, Message = ex.Message });
+                            Console.WriteLine(ex.Message);
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            Console.WriteLine(ex.InnerException);
+                            Console.WriteLine(ex.StackTrace);
+                        }
+                        catch (IOException)
+                        {
+                            throw;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            Console.WriteLine(ex.InnerException);
+                            Console.WriteLine(ex.StackTrace);
                         }
                     }
                 }
-
-            }
-            catch (OperationFailureExeption ex)
-            {
-                network.WriteObject(new ResoultModel() { RequestType = ex.RequestType, Success = false, Message = ex.Message});
-                Console.WriteLine(ex.Message);
             }
             catch (IOException)
             {
-                Console.WriteLine($"Користувач '{handler.LoginFromUserId(UserId ?? -1)}'({UserId ?? 0}) розірвав з'єднання");
-            }
-            catch (InvalidOperationException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.InnerException);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                var user = handler.SafeUserGet();
+                Console.WriteLine($"User '{user.Login}'({user.Id}) disconnected");
             }
             finally
             {

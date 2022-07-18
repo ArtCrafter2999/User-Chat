@@ -14,7 +14,7 @@ namespace ServerDatabase
         public string Login { get; set; }
         public string PasswordMD5 { get; set; }
 
-        public virtual List<User> Chats { get; set; }
+        public virtual List<Chat> Chats { get; set; }
         public virtual List<Message> Messages { get; set; }
     }
 }
