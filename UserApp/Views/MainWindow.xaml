@@ -3,14 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UserApp"
+        xmlns:root="clr-namespace:UserApp"
+        xmlns:local ="clr-namespace:UserApp.Views"
+        d:DataContext="{d:DesignInstance Type=local:MainWindow}"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="450" MinHeight="450"
         Width="800" MinWidth="600"
         Background="#dae6f0">
     <Window.Resources>
-        <local:BoolToVisibility x:Key="VisibilityConverter"/>
+        <root:BoolToVisibility x:Key="VisibilityConverter"/>
     </Window.Resources>
     <Grid>
         <!--#region Визначення колонкам та рядкам-->
@@ -29,6 +31,16 @@
             <StackPanel Name="ChatsStack" Orientation="Vertical"/>
         </ScrollViewer>
         <!--#endregion-->
+        <!--#region Column 1, Row 3 (Overlay)-->
+        <Button Command="{Binding CreateChat}" Grid.Column="0" Grid.Row="2" Height="40" Width="40" Background="#3f75a2" HorizontalAlignment="Right" Margin="0,0,30,0">
+            <Grid Width="37" Height="37">
+                <Line Stroke="White" StrokeThickness="4" 
+                      X1="18.5" Y1="5" X2="18.5" Y2="32"/>
+                <Line Stroke="White" StrokeThickness="4" 
+                      Y1="18.5" X1="5" Y2="18.5" X2="32"/>
+            </Grid>
+        </Button>
+        <!--#endregion-->
         <!--#region Column 2, Row 1-->
         <Canvas Grid.Column="1" Background="SteelBlue"/>
         <TextBlock Text="{Binding Path=ChatController.SelectedChatModel.Title, Mode=OneWay}" Grid.Column="1" Foreground="White" Margin="10,0,10,0" FontWeight="Bold" FontSize="20"/>
@@ -43,7 +55,8 @@
         <TextBox Grid.Column="1" Grid.Row="2" Margin="10,10,10,10" IsEnabled="{Binding Path=IsSelected}"/>
         <!--#endregion-->
         <!--#region Grid поверхи додатка-->
-        <Grid Visibility="{Binding Path=OverlappedGridVisibility, Converter={StaticResource VisibilityConverter}}" Grid.ColumnSpan="2" Grid.RowSpan="3">
+        <Grid d:IsHidden="False" DataContext="{Binding Path=OverlayGrid}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}" Grid.ColumnSpan="2" Grid.RowSpan="3"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
             <!--#region Визначення колонок-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -56,14 +69,75 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <!--#endregion-->
-            <Canvas Grid.ColumnSpan="3" Grid.RowSpan="3" Background="Black" Opacity="0.6"/>
+            <Canvas Grid.ColumnSpan="4" Grid.RowSpan="3" Background="Black" Opacity="0.6"/>
+            <!--#region Додавання чату-->
+            <Grid DataContext="{Binding Path=ChatCreationView}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}"
+                Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="266"/>
+                    <ColumnDefinition Width="266"/>
+                    <ColumnDefinition Width="266"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <!--#region Центральна колонка-->
+                <GroupBox  Grid.Column="2"
+                      Foreground="White" FontSize="16" Header="Створення нового чату" Background="SteelBlue">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60*"/>
+                            <RowDefinition Height="209*"/>
+                            <RowDefinition Height="30*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <Label Content="Назва чату" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
+                            <TextBox Margin="10,0,10,0"/>
+                        </StackPanel>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
+                            <StackPanel Name="AddUsersInChat" Orientation="Vertical"/>
+                        </ScrollViewer>
+                        <Button Command="{Binding Create}" Foreground="SteelBlue" Background="White"
+                            Content="Створити" Grid.Row="1" Margin="162,189,0,0" Grid.RowSpan="2"/>
+                        <Button Command="{Binding Cancel}" Foreground="SteelBlue" Background="White"
+                            Content="Скасувати" Grid.Row="1" Margin="0,188,162,0" Grid.RowSpan="2"/>
+                    </Grid>
+                </GroupBox>
+                <!--#endregion-->
+                <!--#region Права колонка-->
+                <GroupBox Grid.Column="3"
+                      Foreground="White" FontSize="16" Header="Учасники" Background="SteelBlue">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
+                        <StackPanel Name="AddedUsersInChat" Orientation="Vertical"/>
+                    </ScrollViewer>
+                </GroupBox>
+                <!--#endregion-->
+                <!--#region Ліва колонка-->
+                <GroupBox  Grid.Column="1" DataContext="{Binding Path=AddUserView}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}"
+                      Foreground="White" FontSize="16" Header="Знайти користувача" Background="SteelBlue">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60*"/>
+                            <RowDefinition Height="209*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <Label Content="Пошуковий рядок" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=SearchModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
+                        </StackPanel>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
+                            <StackPanel Name="FindUsers" Orientation="Vertical"/>
+                        </ScrollViewer>
+                    </Grid>
+                </GroupBox>
+                <!--#endregion-->
+            </Grid>
+            <!--#endregion-->
             <!--#region Регистраця/Авторизація-->
-            <TabControl Visibility="{Binding Path=AuthVisibility, Converter={StaticResource VisibilityConverter}}" Foreground="White" Grid.Row="1" Grid.Column="1" Background="SteelBlue">
+            <TabControl d:IsHidden="True" DataContext="{Binding Path=AuthView}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}" Foreground="White" Grid.Row="1" Grid.Column="1" Background="SteelBlue">
                 <TabItem Header="Авторізація" FontSize="16" Foreground="SteelBlue">
                     <Grid>
                         <StackPanel>
                             <Label Content="Логін" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=ConnectionController.Login}" Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=Login}" Margin="10,0,10,0"/>
                             <Label Content="Пароль" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
                             <PasswordBox Name="PasswordA" Margin="10,0,10,0"/>
                         </StackPanel>
@@ -75,11 +149,11 @@
                     <Grid>
                         <StackPanel>
                             <Label Content="Логін" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=ConnectionController.Login}" Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=Login}" Margin="10,0,10,0"/>
                             <Label Content="Пароль" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
                             <PasswordBox Name="PasswordR" Margin="10,0,10,0"/>
                             <Label Content="Ім'я" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=ConnectionController.Username}" Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=Username}" Margin="10,0,10,0"/>
                         </StackPanel>
                         <Button Command="{Binding Register}" CommandParameter="{Binding ElementName=PasswordR}"
                                 Margin="0,0,10,10" Content="Зарееструватися" FontSize="16" Foreground="SteelBlue" Background="White" Width="140" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom"/>
@@ -88,7 +162,7 @@
             </TabControl>
             <!--#endregion-->
             <!--#region Підключення до серверу-->
-            <GroupBox Visibility="{Binding Path=ConnectionVisibility, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Grid.Row="1"
+            <GroupBox d:IsHidden="True" DataContext="{Binding Path=ConnectionView}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Grid.Row="1"
                       Foreground="White" FontSize="16" Header="Підключення до серверу" Background="SteelBlue">
                 <Grid>
                     <StackPanel>
@@ -100,15 +174,15 @@
                             Width="100" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom"/>
                 </Grid>
             </GroupBox>
-            
+
             <!--#endregion-->
             <!--#region Плашка невдачі-->
-            <GroupBox Visibility="{Binding Path=FailureVisibility, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Header="Помилка" Foreground="White" FontSize="16" Background="#FF4433">
+            <GroupBox DataContext="{Binding Path=ResoultView}" Visibility="{Binding Path=FailureVisibility, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Header="Помилка" Foreground="White" FontSize="16" Background="#FF4433">
                 <TextBlock Text="{Binding Path=FailureText}" TextWrapping="Wrap" Foreground="White" FontSize="14"/>
             </GroupBox>
             <!--#endregion-->
             <!--#region Плашка успіху-->
-            <GroupBox Visibility="{Binding Path=SuccessVisibility, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Header="Успіх" Foreground="White" FontSize="16" Background="#82b446">
+            <GroupBox DataContext="{Binding Path=ResoultView}" Visibility="{Binding Path=SuccessVisibility, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Header="Успіх" Foreground="White" FontSize="16" Background="#82b446">
                 <TextBlock Text="{Binding Path=SuccessText}" TextWrapping="Wrap" Foreground="White" FontSize="14"/>
             </GroupBox>
             <!--#endregion-->

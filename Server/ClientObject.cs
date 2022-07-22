@@ -6,6 +6,7 @@ using System.IO;
 using NetModelsLibrary;
 using System.Xml;
 using NetModelsLibrary.Models;
+using ServerDatabase;
 #pragma warning disable SYSLIB0006
 
 namespace Server
@@ -18,6 +19,7 @@ namespace Server
     public class ClientObject
     {
         public int? UserId => handler?.User.Id;
+        public User User => handler?.User;
         public TcpClient client;
         public Network network;
         NetworkStream stream;
@@ -30,6 +32,7 @@ namespace Server
             network = new Network(stream);
             handler = new DataBaseHandler(this);
         }
+
         private Thread? Thread = null;
         public void Stop()
         {
@@ -55,7 +58,7 @@ namespace Server
                             switch (Info.Type)
                             {
                                 case RequestType.Registration:
-                                    handler.Registration(network.ReadObject<AuthModel>());
+                                    handler.Registration(network.ReadObject<UserCreationModel>());
                                     break;
                                 case RequestType.Message:
                                     handler.Message(network.ReadObject<MessageModel>());
@@ -63,13 +66,22 @@ namespace Server
                                 case RequestType.Auth:
                                     handler.Auth(network.ReadObject<AuthModel>());
                                     break;
+                                case RequestType.GetAllChats:
+                                    handler.GetAllChats();
+                                    break;
+                                case RequestType.CreateChat:
+                                    handler.CreateChat(network.ReadObject<ChatCreationModel>());
+                                    break;
+                                case RequestType.SearchUsers:
+                                    handler.SearchUsers(network.ReadObject<SearchModel>());
+                                    break;
                                 default:
                                     break;
                             }
                         }
                         catch (OperationFailureExeption ex)
                         {
-                            network.WriteObject(new ResoultModel() { RequestType = ex.RequestType, Success = false, Message = ex.Message });
+                            network.WriteObject(new ResoultModel(ex.RequestType, false, ex.Message));
                             Console.WriteLine(ex.Message);
                         }
                         catch (InvalidOperationException ex)
@@ -93,8 +105,8 @@ namespace Server
             }
             catch (IOException)
             {
-                var user = handler.SafeUserGet();
-                Console.WriteLine($"User '{user.Login}'({user.Id}) disconnected");
+                Console.WriteLine($"User '{User.Login}'({User.Id}) disconnected");
+                handler.UserOffline();
             }
             finally
             {

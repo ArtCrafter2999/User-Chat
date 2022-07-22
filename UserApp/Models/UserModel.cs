@@ -9,8 +9,14 @@ namespace UserApp.Models
 {
     public class UserModel
     {
-        private NetModelsLibrary.Models.UserModel _user;
-        public UserModel(NetModelsLibrary.Models.UserModel model)
+        private UserStatusModel _user;
+        public int Id => _user.Id;
+        public string Name => _user.Name;
+        public string Login => _user.Login;
+        public string LoginString => $"{_user.Login}({_user.Id})";
+        public bool IsOnline => _user.IsOnline;
+        public DateTime? LastOnline => _user.LastOnline;
+        public UserModel(UserStatusModel model)
         {
             _user = model;
         }

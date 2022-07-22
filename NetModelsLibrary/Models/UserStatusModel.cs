@@ -12,6 +12,6 @@ namespace NetModelsLibrary.Models
         public string Name { get; set; }
         public string Login { get; set; }
         public bool IsOnline { get; set; }
-        public DateTime LastOnline { get; set; }
+        public DateTime? LastOnline { get; set; }
     }
 }

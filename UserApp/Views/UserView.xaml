@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="UserApp.Views.UserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:root="clr-namespace:UserApp"
+             xmlns:local="clr-namespace:UserApp.Views"
+             d:DataContext="{d:DesignInstance Type=local:UserView}"
+             mc:Ignorable="d"
+             Height="40" MinWidth="234">
+    <UserControl.Resources>
+        <root:BoolToVisibility x:Key="VisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Button Name="Button" Command="{Binding Click}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="SteelBlue">
+            <Grid>
+                <TextBlock Text="{Binding Path=UserModel.Name, Mode=OneWay}" Foreground="White" FontSize="15" FontWeight="DemiBold" Height="20" Margin="0,0,0,16"/>
+                <TextBlock Text="{Binding Path=UserModel.LoginString, Mode=OneWay}" Foreground="White" FontSize="12" Height="20" Margin="0,17,0,-1"/>
+                <Canvas Visibility="{Binding Path=UserModel.IsOnline, Converter={StaticResource VisibilityConverter}}" HorizontalAlignment="Right" Margin="10" Width="10" Height="10">
+                    <Ellipse Width="10" Height="10" Fill="White"/>
+                </Canvas>
+                <!--{Binding Path=UserModel.IsOnline, Converter={StaticResource VisibilityConverter}}-->
+            </Grid>
+        </Button>
+    </Grid>
+</UserControl>

@@ -10,7 +10,8 @@ namespace NetModelsLibrary.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public List<UserModel> Users { get; set; }
-        public MessageModel LastMessage { get; set; }
+        public List<UserStatusModel> Users { get; set; }
+        public MessageModel? LastMessage { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

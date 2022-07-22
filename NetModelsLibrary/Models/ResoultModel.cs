@@ -8,8 +8,13 @@ namespace NetModelsLibrary.Models
 {
     public class ResoultModel
     {
-        public RequestType? RequestType { get; set; }
+        public RequestType? RequestType { get; set; } = null;
         public bool Success { get; set; }
         public string? Message { get; set; }
+
+        public ResoultModel(){}
+        public ResoultModel(bool success){ Success = success; }
+        public ResoultModel(bool success, string message){ Success = success; Message = message; }
+        public ResoultModel(RequestType? type, bool success, string message){ RequestType = type; Success = success; Message = message; }
     }
 }

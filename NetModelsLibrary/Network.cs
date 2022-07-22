@@ -88,5 +88,9 @@ namespace NetModelsLibrary
                 );
             }
         }
+        public void WriteRequest(RequestType type)
+        {
+            WriteObject(new RequestInfoModel(type));
+        }
     }
 }

@@ -20,8 +20,10 @@ D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\refint\UserApp.dll
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\UserApp.pdb
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\UserApp.genruntimeconfig.cache
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\ref\UserApp.dll
-D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\ChatViewModel.g.cs
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\MainWindow.g.cs
-D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\ChatViewModel.baml
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\MainWindow.baml
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\ChatView.g.cs
+D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\UserView.g.cs
+D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\ChatView.baml
+D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\UserView.baml

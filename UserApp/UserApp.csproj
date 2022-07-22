@@ -11,4 +11,10 @@
     <ProjectReference Include="..\NetModelsLibrary\NetModelsLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\ChatView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

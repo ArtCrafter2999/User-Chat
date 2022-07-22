@@ -25,7 +25,7 @@ namespace UserApp.Models
                 return users;
             }
         }
-        public DateTime LastMessageTime => _chat.LastMessage.SendTime;
+        public DateTime LastTime => _chat.LastMessage != null ? _chat.LastMessage.SendTime : _chat.CreationDate;
         public MessageModel LastMessage => new MessageModel(_chat.LastMessage);
         public ChatModel(NetModelsLibrary.Models.ChatModel model)
         {

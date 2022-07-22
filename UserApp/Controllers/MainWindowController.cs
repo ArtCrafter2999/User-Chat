@@ -6,22 +6,30 @@ using System.Text;
 using System.Threading.Tasks;
 using UserApp.Views;
 using UserApp.Models;
-
+using System.Windows;
 
 namespace UserApp.Controllers
 {
     public class MainWindowController : INotifyProperyChangedBase
     {
-        public ObservableCollection<ChatModel> ChatModels { get; set; } = new ObservableCollection<ChatModel>();
+        public List<ChatModel> ChatModels { get; set; } = new List<ChatModel>();
         public ChatModel? SelectedChatModel { get => _selectedChatModel; set { _selectedChatModel = value; OnPropertyChanged(nameof(SelectedChatModel)); MainWindow.OnPropertyChanged(nameof(MainWindow.IsSelected)); } }
         private ChatModel? _selectedChatModel = null;
+        public ViewModels.OverlayGrid OverlayGrid => MainWindow.OverlayGrid;
 
-        
+        public MainWindow MainWindow => MainWindow.instance;
+        public MainWindowController()
+        {}
 
-        public MainWindow MainWindow { get; set; }
-        public MainWindowController(MainWindow window)
+        public void LoadChats()
         {
-            MainWindow = window;
+            Connection.Network.WriteRequest(NetModelsLibrary.RequestType.GetAllChats);
+            var allchats = Connection.Network.ReadObject<NetModelsLibrary.Models.AllChatsModel>();
+            ChatModels.Clear();
+            foreach (var NetChatModel in allchats.Chats)
+            {
+                ChatModels.Add(new ChatModel(NetChatModel));
+            }
         }
     }
 }
