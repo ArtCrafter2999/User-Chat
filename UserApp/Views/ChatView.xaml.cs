@@ -27,7 +27,7 @@ namespace UserApp.Views
     {
         public ICommand Click { get; set; } 
         public ChatModel ChatModel { get; set; }
-        public string LastMessageView => ChatModel.Users.Count > 2 ? ChatModel.LastMessage.User.Name + ": " + ChatModel.LastMessage.Text : ChatModel.LastMessage.Text;
+        public string LastMessageView => ChatModel.LastMessage != null? (ChatModel.Users.Count > 2 ? ChatModel.LastMessage.User.Name + ": " + ChatModel.LastMessage.Text : ChatModel.LastMessage.Text) : "";
         public ChatView(ChatModel chatModel)
         {
             InitializeComponent();

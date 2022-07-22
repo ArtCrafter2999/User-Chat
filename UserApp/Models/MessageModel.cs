@@ -13,7 +13,7 @@ namespace UserApp.Models
         public int? Id => _message.Id;
         public int ChatId => _message.ChatId;
         public DateTime SendTime => _message.SendTime;
-        public string Text => _message.Text;
+        public string Text => _message.Text ?? "";
         public List<FileInfoModel> Files => _message.Files;
         public UserModel User => new UserModel(_message.User);
         public MessageModel(NetModelsLibrary.Models.MessageModel model)

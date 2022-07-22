@@ -67,10 +67,10 @@ namespace UserApp.ViewModels
             {
                 foreach (var user in chat.Users)
                 {
-                    if (!RelatedUsers.Contains(user)) RelatedUsers.Add(user);
+                    if (!RelatedUsers.Contains(user) && MainWindow.ChatController.SelfUser != user) RelatedUsers.Add(user);
                 }
             }
-            RelatedUsers.Sort();
+            RelatedUsers.Sort((a, b) => string.Compare(a.Name, b.Name));
 
             MainWindow.AddUsersInChat.Children.Clear();
             MainWindow.AddedUsersInChat.Children.Clear();

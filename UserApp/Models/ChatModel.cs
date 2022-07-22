@@ -26,7 +26,7 @@ namespace UserApp.Models
             }
         }
         public DateTime LastTime => _chat.LastMessage != null ? _chat.LastMessage.SendTime : _chat.CreationDate;
-        public MessageModel LastMessage => new MessageModel(_chat.LastMessage);
+        public MessageModel? LastMessage => _chat.LastMessage != null ? new MessageModel(_chat.LastMessage) : null;
         public ChatModel(NetModelsLibrary.Models.ChatModel model)
         {
             _chat = model;

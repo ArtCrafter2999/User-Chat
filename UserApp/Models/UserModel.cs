@@ -20,5 +20,13 @@ namespace UserApp.Models
         {
             _user = model;
         }
+        public static bool operator ==(UserModel left, UserModel right)
+        {
+            return left.Id == right.Id;
+        }
+        public static bool operator !=(UserModel left, UserModel right)
+        {
+            return left.Id != right.Id;
+        }
     }
 }
