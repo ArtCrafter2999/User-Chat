@@ -14,9 +14,9 @@ namespace NetModelsLibrary
         /// </summary>
         Registration,
         /// <summary>
-        /// After this server expects MessageModel
+        /// After this server expects MessageModel and returns the same message but with id
         /// </summary>
-        Message,
+        SendMessage,
         /// <summary>
         /// After this server expects that sequence of requests:
         /// Expects AuthModel returns ResoultModel
@@ -37,5 +37,10 @@ namespace NetModelsLibrary
         /// Expects SearchModel returns AllUsersModel 
         /// </summary>
         SearchUsers,
+        /// <summary>
+        /// After this server expects that sequence of requests:
+        /// Expects GetMessagesInfoModel returns MessagesPageModel
+        /// </summary>
+        GetPageOfMessages
     }
 }

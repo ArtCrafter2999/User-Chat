@@ -15,7 +15,7 @@ namespace Server
         public RequestType? RequestType { get; set; }
         public OperationFailureExeption(RequestType type, string message) : base(message) { RequestType = type; }
         public OperationFailureExeption(string message) : base(message) { }
-        public OperationFailureExeption() : base() { }
+        public OperationFailureExeption() : base("не вдалося виконати цю операцію") {}
     }
     public class DataBaseHandler
     {
@@ -103,15 +103,15 @@ namespace Server
             UserOnline();
         }
 
-        public void Message(MessageModel model)
+        public void SendMessage(MessageModel model)
         {
-            Console.WriteLine($"'{User.Name}'({User.Id}) > send message > chatid: {model.ChatId};\n content:\n\n {model.Text}");
+            Console.WriteLine($"{User.Login}({User.Id}) request send message to chat ({model.ChatId})");
             try
             {
                 using (var db = new ServerDbContext())
                 {
                     if (User.Id == -1) throw new OperationFailureExeption();
-                    var message = new Message() { ChatId = model.ChatId, Text = model.Text, User = User };
+                    var message = new Message() { Text = model.Text, UserId = User.Id, ChatId = model.ChatId, SendTime = model.SendTime};
                     db.Messages.Add(message);
                     db.SaveChanges();
 
@@ -126,11 +126,13 @@ namespace Server
                     for (int i = 0; i < list.Count; i++)
                     {
                         list[i].ServerPath =
-                            network.ReadFile($"Files\\{model.Files[i].Name}.{model.Files[i].Format}",
+                            network.ReadFile($"Files\\{list[i].Id}_{model.Files[i].Name}.{model.Files[i].Format}",
                             model.Files[i]
                         );
                     }
                     db.SaveChanges();
+                    model.Id = message.Id;
+                    network.WriteObject(model);
                 }
             }
             catch (OperationFailureExeption)
@@ -180,9 +182,7 @@ namespace Server
                     MessageModel? mesageModel = null;
                     try
                     {
-                        var messages = from Message msg in chat.Messages
-                                       orderby msg.SendTime
-                                       select msg;
+                        var messages = chat.Messages.OrderByDescending(c => c.SendTime);
                         if (messages != null && messages.Count() > 0)
                         {
                             var message = messages.First();
@@ -313,6 +313,47 @@ namespace Server
                 }
                 network.WriteObject(res);
                 Console.WriteLine($"For {User.Login}({User.Id})'s search request '{model.SearchString}' Founded {allusers.Count} users");
+            }
+        }
+
+        public const int PageSize = 20; 
+        public void GetPageOfMessages(GetMessagesInfoModel model)
+        {
+            Console.WriteLine($"{User.Login}({User.Id}) Request to get messages in range {model.PageNumber * PageSize}-{model.PageNumber+1 * PageSize} from chat ({model.ChatId})");
+            using (var db = new ServerDbContext())
+            {
+                var page = new MessagesPageModel()
+                {
+                    PageNumber = model.PageNumber + 1
+                };
+                var messages = db.Messages
+                    .Include(m => m.Chat)
+                    .Include(m => m.User)
+                    .Where(m => m.ChatId == model.ChatId)
+                    .OrderByDescending(m => m.SendTime)
+                    .Skip(model.PageNumber * PageSize)
+                    .Take(PageSize);
+                if (messages.Count() < PageSize) page.IsEnd = true;
+                foreach (var message in messages)
+                {
+                    page.Messages.Add(new MessageModel()
+                    {
+                        ChatId = model.ChatId,
+                        Id = message.Id,
+                        SendTime = message.SendTime,
+                        Text = message.Text,
+                        User = new UserStatusModel
+                        {
+                            Id = message.UserId,
+                            IsOnline = IsUserOnline(message.User),
+                            LastOnline = message.User.LastOnline,
+                            Login = message.User.Login,
+                            Name = message.User.Name
+                        }
+                    });
+                }
+                network.WriteObject(page);
+                Console.WriteLine($"{User.Login}({User.Id}) received {page.Messages.Count} messages");
             }
         }
     }

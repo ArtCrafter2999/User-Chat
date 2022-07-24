@@ -60,8 +60,8 @@ namespace Server
                                 case RequestType.Registration:
                                     handler.Registration(network.ReadObject<UserCreationModel>());
                                     break;
-                                case RequestType.Message:
-                                    handler.Message(network.ReadObject<MessageModel>());
+                                case RequestType.SendMessage:
+                                    handler.SendMessage(network.ReadObject<MessageModel>());
                                     break;
                                 case RequestType.Auth:
                                     handler.Auth(network.ReadObject<AuthModel>());
@@ -74,6 +74,9 @@ namespace Server
                                     break;
                                 case RequestType.SearchUsers:
                                     handler.SearchUsers(network.ReadObject<SearchModel>());
+                                    break;
+                                case RequestType.GetPageOfMessages:
+                                    handler.GetPageOfMessages(network.ReadObject<GetMessagesInfoModel>());
                                     break;
                                 default:
                                     break;

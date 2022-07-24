@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 D:\Projects\User-Chat\UserApp\App.xaml
-3-545685147
+4-154591615
 
-22776911544
+24120062000
 1951601727597
-Views\ChatView.xaml;Views\MainWindow.xaml;Views\UserView.xaml;
+Views\ChatView.xaml;Views\MainWindow.xaml;Views\MessageView.xaml;Views\UserView.xaml;
 
 True
 

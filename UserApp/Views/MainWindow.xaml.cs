@@ -28,10 +28,10 @@ namespace UserApp.Views
     {
         public static MainWindow instance { get; set; }
 
-        public MainWindowController ChatController { get; set; }
-        public bool IsSelected => ChatController.SelectedChatModel != null;
+        public ChatController ChatController { get; set; }
 
         public OverlayGrid OverlayGrid { get; set; }
+        public ChatMessagesViewModel ChatView { get; set; }
 
         public ICommand CreateChat => new RelayCommand(o =>
         {
@@ -50,9 +50,12 @@ namespace UserApp.Views
                 InitializeComponent();
                 DataContext = this;
 
-                ChatController = new MainWindowController();
+                ChatController = new ChatController();
+
                 OverlayGrid = new OverlayGrid(/*this*/);
                 OverlayGrid.AuthView.Success += _ => UpdateChatView();
+
+                ChatView = new ChatMessagesViewModel();
             }
             catch (Exception ex)
             {
@@ -76,6 +79,30 @@ namespace UserApp.Views
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
+
+        private void ChatTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            var text = (sender as TextBox).Text.Trim();
+            if (e.Key == Key.Return && text.Length > 0)
+            {
+                (sender as TextBox).Text = "";
+                ChatController.SendMessage(new NetModelsLibrary.Models.MessageModel()
+                {
+                    ChatId = ChatController.SelectedChatModel.Id,
+                    User = new NetModelsLibrary.Models.UserStatusModel()
+                    {
+                        Id = ChatController.SelfUser.Id,
+                        Login = ChatController.SelfUser.Login,
+                        Name = ChatController.SelfUser.Name,
+                        IsOnline = true,
+                        LastOnline = ChatController.SelfUser.LastOnline,
+                    },
+                    SendTime = DateTime.Now,
+                    Text = text
+                });
+            }
         }
     }
 }

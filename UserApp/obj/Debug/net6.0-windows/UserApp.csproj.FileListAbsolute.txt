@@ -27,3 +27,5 @@ D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\ChatView.g.cs
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\UserView.g.cs
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\ChatView.baml
 D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\UserView.baml
+D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\MessageView.g.cs
+D:\Projects\User-Chat\UserApp\obj\Debug\net6.0-windows\Views\MessageView.baml

@@ -26,12 +26,12 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <!--#endregion-->
-        <!--#region Column 1-->
+        <!--#region Усі чати-->
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
             <StackPanel Name="ChatsStack" Orientation="Vertical"/>
         </ScrollViewer>
         <!--#endregion-->
-        <!--#region Column 1, Row 3 (Overlay)-->
+        <!--#region Кнопка додати чат-->
         <Button Command="{Binding CreateChat}" Grid.Column="0" Grid.Row="2" Height="40" Width="40" Background="#3f75a2" HorizontalAlignment="Right" Margin="0,0,30,0">
             <Grid Width="37" Height="37">
                 <Line Stroke="White" StrokeThickness="4" 
@@ -41,21 +41,21 @@
             </Grid>
         </Button>
         <!--#endregion-->
-        <!--#region Column 2, Row 1-->
+        <!--#region Назва чату-->
         <Canvas Grid.Column="1" Background="SteelBlue"/>
         <TextBlock Text="{Binding Path=ChatController.SelectedChatModel.Title, Mode=OneWay}" Grid.Column="1" Foreground="White" Margin="10,0,10,0" FontWeight="Bold" FontSize="20"/>
         <!--#endregion-->
-        <!--#region Column 2, Row 2-->
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Column="1" Grid.Row="1">
+        <!--#region Простір чату-->
+        <ScrollViewer Name="MessageScroll" DataContext="{Binding Path=ChatView}" HorizontalScrollBarVisibility="Disabled" Grid.Column="1" Grid.Row="1">
             <StackPanel Name="MessagesStack" Orientation="Vertical"/>
         </ScrollViewer>
-        <!--#endregion-->
-        <!--#region Column 2, Row 3-->
+        
         <Canvas Grid.Column="1" Grid.Row="2" Background="LightSteelBlue"/>
-        <TextBox Grid.Column="1" Grid.Row="2" Margin="10,10,10,10" IsEnabled="{Binding Path=IsSelected}"/>
+        <TextBox DataContext="{Binding Path=ChatView}" KeyDown="ChatTextBox_KeyDown" Grid.Column="1" Grid.Row="2" Margin="10,10,10,10" IsEnabled="{Binding Path=IsSelected}"/>
         <!--#endregion-->
         <!--#region Grid поверхи додатка-->
-        <Grid d:IsHidden="False" DataContext="{Binding Path=OverlayGrid}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}" Grid.ColumnSpan="2" Grid.RowSpan="3"
+        <!--{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}-->
+        <Grid d:IsHidden="True" DataContext="{Binding Path=OverlayGrid}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}" Grid.ColumnSpan="2" Grid.RowSpan="3"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
             <!--#region Визначення колонок-->
             <Grid.ColumnDefinitions>

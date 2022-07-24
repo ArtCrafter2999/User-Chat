@@ -13,6 +13,9 @@ namespace UserApp.Models
         public int Id => _chat.Id;
         public string Title => _chat.Title;
         public int UnridedMessageCount => throw new NotImplementedException();
+        public List<MessageModel> Messages { get; set; } = new List<MessageModel>();
+        public int PagesLoaded = 0;
+        public bool IsEndPage = false;
         public List<UserModel> Users
         {
             get

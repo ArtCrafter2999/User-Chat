@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="UserApp.Views.MessageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserApp.Views"
+             xmlns:root="clr-namespace:UserApp"
+             d:DataContext="{d:DesignInstance Type=local:MessageView}"
+             mc:Ignorable="d"   
+             Name="UserControll"
+             >
+    <UserControl.Resources>
+        <root:BoolToVisibility x:Key="VisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Visibility="{Binding Path=IsOthersMessage, Converter={StaticResource VisibilityConverter}}"
+              Grid.Column="0" Width="{Binding Path=HalfWidth}">
+            <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"
+                CornerRadius="10,10,10,10" BorderBrush="White" Background="#1c3448">
+            </Border>
+            <TextBlock TextWrapping="WrapWithOverflow" Margin="5" Foreground="White" 
+                Text="{Binding Path=MessageModel.Text}"
+                       />
+            <!--{Binding Path=MessageModel.Text}-->
+        </Grid>
+        <Grid Visibility="{Binding Path=IsMyMessage, Converter={StaticResource VisibilityConverter}}"
+              Grid.Column="1" Width="{Binding Path=HalfWidth}">
+            <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"
+                CornerRadius="10,10,10,10" BorderBrush="White" Background="#FF5A9AE0">
+            </Border>
+            <TextBlock TextWrapping="WrapWithOverflow" Margin="5" Foreground="White" 
+                Text="{Binding Path=MessageModel.Text}"
+                       />
+        </Grid>
+    </Grid>
+</UserControl>
