@@ -1,11 +1,11 @@
-﻿using NetModelsLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using UserApp.Controllers;
 
 namespace UserApp
 {
@@ -17,5 +17,11 @@ namespace UserApp
         public static NetworkStream Stream { get; set; }
         public static Network Network { get; set; }
         public static bool IsConnected { get; set; } = false;
+        public static void Disconect()
+        {
+            Network?.Stop();
+            Stream?.Close();
+            Client?.Close();
+        }
     }
 }

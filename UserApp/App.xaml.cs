@@ -13,5 +13,13 @@ namespace UserApp
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            if (Connection.IsConnected)
+            {
+                Connection.Disconect();
+                UserApp.Views.MainWindow.instance.ChatController.UpdateController.Stop();
+            }
+        }
     }
 }

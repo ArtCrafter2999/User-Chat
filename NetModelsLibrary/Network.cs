@@ -11,13 +11,22 @@ namespace NetModelsLibrary
 {
     public class Network
     {
-        NetworkStream _stream;
+        protected NetworkStream _stream;
         public Network(NetworkStream stream)
         {
             _stream = stream;
         }
 
         public readonly Regex FileRegEx = new Regex(@"([^\\]+)\.([^\.]+$)");
+
+        protected string ReadRaw()
+        {
+            if (_stream != null)
+            {
+                return new BinaryReader(_stream).ReadString();
+            }
+            throw new Exception();
+        }
 
         public string ReadFile(string FullName, FileInfoModel Info)
         {
@@ -41,7 +50,7 @@ namespace NetModelsLibrary
                 int PackcagesCount = (int)(Fstream.Length / 1024);
                 if (Fstream.Length % 1024 > 0) PackcagesCount++;
                 Match match = FileRegEx.Match(Filepath);
-                WriteObject(new FileInfoModel() 
+                WriteObject(new FileInfoModel()
                 {
                     DataSize = Fstream.Length,
                     Name = match.Groups[1].Value,
@@ -62,17 +71,23 @@ namespace NetModelsLibrary
             }
         }
 
-        public T ReadObject<T>()
+        public virtual T ReadObject<T>()
         {
-            if (_stream != null)
-            {
-                var message = new BinaryReader(_stream).ReadString();
-                var Serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
-                T? Model;
-                using (TextReader reader = new StringReader(message))
-                    Model = (T?)Serializer.Deserialize(reader);
-                if (Model != null) return Model;
-            }
+            var message = ReadRaw();
+            var Serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+            T? Model;
+            using (TextReader reader = new StringReader(message))
+                Model = (T?)Serializer.Deserialize(reader);
+            if (Model != null) return Model;
+            throw new Exception();
+        }
+        public virtual T ReadObject<T>(string raw)
+        {
+            var Serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+            T? Model;
+            using (TextReader reader = new StringReader(raw))
+                Model = (T?)Serializer.Deserialize(reader);
+            if (Model != null) return Model;
             throw new Exception();
         }
         public void WriteObject<T>(T obj)
@@ -91,6 +106,10 @@ namespace NetModelsLibrary
         public void WriteRequest(RequestType type)
         {
             WriteObject(new RequestInfoModel(type));
+        }
+        public void WriteNotify(NotifyType type)
+        {
+            WriteObject(new NotifyInfoModel(type));
         }
     }
 }

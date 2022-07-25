@@ -92,7 +92,5 @@ namespace UserApp.ViewModels
                 MessagesDown(selectedChat.Messages);
             }
         }
-
-        
     }
 }

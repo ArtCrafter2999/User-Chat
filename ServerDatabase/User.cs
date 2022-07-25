@@ -18,5 +18,6 @@ namespace ServerDatabase
 
         public virtual List<Chat> Chats { get; set; }
         public virtual List<Message> Messages { get; set; }
+        public virtual List<UserChatRelative> UserChatRelatives { get; set; }
     } 
 }

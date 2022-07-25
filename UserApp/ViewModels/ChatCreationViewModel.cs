@@ -63,11 +63,12 @@ namespace UserApp.ViewModels
         }
         public void UpdateUsersView()
         {
+            RelatedUsers.Clear();
             foreach (var chat in MainWindow.ChatController.ChatModels)
             {
                 foreach (var user in chat.Users)
                 {
-                    if (!RelatedUsers.Contains(user) && MainWindow.ChatController.SelfUser != user) RelatedUsers.Add(user);
+                    if (!AddedUsers.Contains(user) && !RelatedUsers.Contains(user) && MainWindow.ChatController.SelfUser != user) RelatedUsers.Add(user);
                 }
             }
             RelatedUsers.Sort((a, b) => string.Compare(a.Name, b.Name));
@@ -106,5 +107,9 @@ namespace UserApp.ViewModels
                 });
             }
         }
+        //private void NotAlreadyContained(UserModel user)
+        //{
+
+        //}
     }
 }

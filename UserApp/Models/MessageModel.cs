@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NetModelsLibrary.Models;
+using UserApp.Views;
 
 namespace UserApp.Models
 {
@@ -12,6 +13,7 @@ namespace UserApp.Models
         private NetModelsLibrary.Models.MessageModel _message;
         public int? Id => _message.Id;
         public int ChatId => _message.ChatId;
+        public ChatModel? Chat => MainWindow.instance.ChatController.ChatModels.Find(c => c.Id == ChatId);
         public DateTime SendTime => _message.SendTime;
         public string Text => _message.Text ?? "";
         public List<FileInfoModel> Files => _message.Files;
@@ -20,5 +22,6 @@ namespace UserApp.Models
         {
             _message = model;
         }
+        
     }
 }

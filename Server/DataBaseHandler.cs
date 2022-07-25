@@ -19,7 +19,8 @@ namespace Server
     }
     public class DataBaseHandler
     {
-        private static List<int> UsersOnline { get; set; } = new List<int>();
+        public static List<int> UsersOnline { get; set; } = new List<int>();
+        public static Dictionary<int, Network> NetworkOfId { get; set; } = new Dictionary<int, Network>();
         private User? _user;
         public User User
         {
@@ -37,23 +38,22 @@ namespace Server
         }
         public Network network => Client.network;
         public ClientObject Client { get; set; }
+        public NotifyUserController Notifyer { get; set; }
         public DataBaseHandler(ClientObject client)
         {
             Client = client;
+            Notifyer = new NotifyUserController(client, this);
         }
-
-        /// <summary>
-        /// Повертає або екземпляр User або новий User з параметрами unknown
-        /// </summary>
-        /// <returns>Повертає або екземпляр User або новий User з параметрами unknown</returns>
 
         public void UserOnline()
         {
             UsersOnline.Add(User.Id);
+            NetworkOfId.Add(User.Id, network);
         }
         public void UserOffline()
         {
             UsersOnline.Remove(User.Id);
+            NetworkOfId.Remove(User.Id);
             using (var db = new ServerDbContext())
             {
                 User.LastOnline = DateTime.Now;
@@ -147,7 +147,7 @@ namespace Server
             AllChatsModel res;
             using (var db = new ServerDbContext())
             {
-                var chats = from Chat c in db.Chats.Include(c => c.Users).Include(c => c.Messages)
+                var chats = from Chat c in db.Chats.Include(c => c.Users).Include(c => c.Messages).Include(c => c.UserChatRelatives)
                             where c.Users.Contains(User)
                             select c;
                 res = new AllChatsModel();
@@ -203,11 +203,12 @@ namespace Server
                         Title = chat.Title ?? GenerateChatName(chat),
                         Users = userStatusModels,
                         LastMessage = mesageModel ?? null,
-                        CreationDate = chat.CreationDate
+                        CreationDate = chat.CreationDate,
+                        Unreaded = chat.UserChatRelatives.Find(ucr => ucr.User.Id == User.Id).Unreaded
                     });
                 }
                 network.WriteObject(res);
-                Console.WriteLine($"Returned {res.Chats.Count} chats with {User.Login}({User.Id})");
+                Console.WriteLine($"Returned {res.Chats.Count} chats with {res.User.Login}({res.User.Id})");
             }
         }
 
@@ -243,12 +244,40 @@ namespace Server
                 db.SaveChanges();
                 model.Users.Add(new IdModel(User.Id));
 
+                var userStatusModels = new List<UserStatusModel>();
                 foreach (var UserIdModel in model.Users)
                 {
                     var user = db.Users.Find(UserIdModel.Id);
-                    if (user != null) chat.Users.Add(user);
+                    if (user != null)
+                    {
+                        chat.Users.Add(user);
+                        userStatusModels.Add(new UserStatusModel()
+                        {
+                            Id = user.Id,
+                            Name = user.Name,
+                            Login = user.Login,
+                            IsOnline = IsUserOnline(user),
+                            LastOnline = user.LastOnline
+                        });
+                        db.UserChatRelatives.Add(new UserChatRelative()
+                        {
+                            User = user,
+                            Chat = chat,
+                            Unreaded = 0
+                        });
+                    }
                 }
                 db.SaveChanges();
+
+                Notifyer.ChatCreated(new ChatModel()
+                {
+                    Id = chat.Id,
+                    CreationDate = chat.CreationDate,
+                    Title = chat.Title ?? GenerateChatName(chat),
+                    Users = userStatusModels,
+                    Unreaded = 0,
+                    LastMessage = null
+                });
                 Console.WriteLine($"{User.Login}({User.Id})'s Chat created for {model.Users.Count} users");
             }
             network.WriteObject(new ResoultModel(RequestType.CreateChat, true, "You successfuly created a new chat"));
@@ -356,5 +385,6 @@ namespace Server
                 Console.WriteLine($"{User.Login}({User.Id}) received {page.Messages.Count} messages");
             }
         }
+
     }
 }

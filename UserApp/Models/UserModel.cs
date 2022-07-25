@@ -28,5 +28,9 @@ namespace UserApp.Models
         {
             return left.Id != right.Id;
         }
+        public override bool Equals(object? obj)
+        {
+            return Id == (obj as UserModel)?.Id;
+        }
     }
 }

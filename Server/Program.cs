@@ -28,6 +28,7 @@ finally
     if (listener != null)
         listener.Stop();
 }
+Console.ReadLine();
 
 
 IPAddress GetLocalIPAddress()

@@ -19,12 +19,20 @@ namespace UserApp.Controllers
         public ViewModels.OverlayGrid OverlayGrid => MainWindow.OverlayGrid;
         public ViewModels.ChatMessagesViewModel ChatView => MainWindow.ChatView;
 
-        public event Action ChatChanged;
-        public event Action<MessageModel> MessageSended;
+        public event Action? ChatChanged;
+        public event Action<MessageModel>? MessageSended;
 
         public MainWindow MainWindow => MainWindow.instance;
+        public ReceiveNotifyController UpdateController;
+
         public ChatController()
-        {}
+        {
+            UpdateController = new ReceiveNotifyController();
+            MainWindow.instance.OverlayGrid.AuthView.Success += _ =>
+            {
+                UpdateController.Start();
+            };
+        }
 
         public void LoadChats()
         {

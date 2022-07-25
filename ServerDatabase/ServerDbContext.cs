@@ -14,10 +14,15 @@ namespace ServerDatabase
         public DbSet<Chat> Chats => Set<Chat>();
         public DbSet<Message> Messages => Set<Message>();
         public DbSet<File> Files => Set<File>();
+        public DbSet<UserChatRelative> UserChatRelatives => Set<UserChatRelative>();
         public ServerDbContext() => Database.EnsureCreated();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=server.db");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserChatRelative>().HasKey(ucr => new { ucr.UserId, ucr.ChatId });
         }
     }
 }

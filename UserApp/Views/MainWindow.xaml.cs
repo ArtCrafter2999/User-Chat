@@ -43,35 +43,40 @@ namespace UserApp.Views
 
         public MainWindow()
         {
-            try
+            instance = this;
+
+            InitializeComponent();
+            DataContext = this;
+
+            OverlayGrid = new OverlayGrid();
+            ChatController = new ChatController();
+            ChatView = new ChatMessagesViewModel();
+
+            ChatController.MessageSended += m =>
             {
-                instance = this;
+                if (m.Chat != null)
+                {
+                    m.Chat.LastMessage = m;
+                    SortChats();
+                }
+            };
 
-                InitializeComponent();
-                DataContext = this;
-
-                ChatController = new ChatController();
-
-                OverlayGrid = new OverlayGrid(/*this*/);
-                OverlayGrid.AuthView.Success += _ => UpdateChatView();
-
-                ChatView = new ChatMessagesViewModel();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + ex.StackTrace, "error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            OverlayGrid.AuthView.Success += _ => UpdateChatView();
         }
 
         public void UpdateChatView()
         {
             ChatController.LoadChats();
+            SortChats();
+        }
+
+        public void SortChats()
+        {
             ChatsStack.Children.Clear();
-            List<ChatModel> copy = ChatController.ChatModels.ToList();
-            copy.Sort((a, b) => a.LastTime < b.LastTime ? 1 : -1);
-            foreach (var model in copy)
+            ChatController.ChatModels.Sort((a, b) => a.LastTime < b.LastTime ? 1 : -1);
+            foreach (var model in ChatController.ChatModels)
             {
-                ChatsStack.Children.Add(new ChatView(model));
+                ChatsStack.Children.Add(new ChatView(model) { IsEnabled = ChatView.IsSelected? model.Id == ChatController.SelectedChatModel.Id : true});
             }
         }
 

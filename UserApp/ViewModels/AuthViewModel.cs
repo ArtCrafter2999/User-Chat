@@ -15,8 +15,8 @@ namespace UserApp.ViewModels
 {
     public class AuthViewModel : NetworkResoulter, INotifyPropertyChanged
     {
-        public string Login { get; set; }
-        public string Username { get; set; }
+        public string? Login { get; set; }
+        public string? Username { get; set; }
 
         public bool Visibility { get => _visibility; set { _visibility = value; OnPropertyChanged(nameof(Visibility)); } }
         private bool _visibility = false;
@@ -33,7 +33,7 @@ namespace UserApp.ViewModels
             {
                 Invoke(new ResoultModel(false, "Немає з'єднання з сервером"));
             }
-        });
+        }, o => o != null && Login != null);
         public ICommand Register => new RelayCommand(o =>
         {
             if (Connection.IsConnected)
@@ -48,7 +48,7 @@ namespace UserApp.ViewModels
             {
                 Invoke(new ResoultModel(false, "Немає з'єднання з сервером"));
             }
-        });
+        }, o => o != null && Login != null && Username != null);
 
         private static string CreateMD5(string input)
         {

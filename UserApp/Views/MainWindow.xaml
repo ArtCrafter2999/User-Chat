@@ -137,7 +137,7 @@
                     <Grid>
                         <StackPanel>
                             <Label Content="Логін" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=Login}" Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                             <Label Content="Пароль" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
                             <PasswordBox Name="PasswordA" Margin="10,0,10,0"/>
                         </StackPanel>
@@ -149,11 +149,11 @@
                     <Grid>
                         <StackPanel>
                             <Label Content="Логін" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=Login}" Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                             <Label Content="Пароль" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
                             <PasswordBox Name="PasswordR" Margin="10,0,10,0"/>
                             <Label Content="Ім'я" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=Username}" Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                         </StackPanel>
                         <Button Command="{Binding Register}" CommandParameter="{Binding ElementName=PasswordR}"
                                 Margin="0,0,10,10" Content="Зарееструватися" FontSize="16" Foreground="SteelBlue" Background="White" Width="140" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom"/>

@@ -28,11 +28,22 @@ namespace UserApp.Models
                 return users;
             }
         }
-        public DateTime LastTime => _chat.LastMessage != null ? _chat.LastMessage.SendTime : _chat.CreationDate;
-        public MessageModel? LastMessage => _chat.LastMessage != null ? new MessageModel(_chat.LastMessage) : null;
+        public DateTime LastTime => _lastMessage != null ? _lastMessage.SendTime : _chat.CreationDate;
+        public MessageModel? LastMessage {
+            get 
+            {
+                return _chat.LastMessage != null ? _lastMessage : null;
+            } 
+            set
+            {
+                _lastMessage = value;
+            }
+        }
+        private MessageModel? _lastMessage;
         public ChatModel(NetModelsLibrary.Models.ChatModel model)
         {
             _chat = model;
+            _lastMessage = _chat.LastMessage != null ? new MessageModel(_chat.LastMessage) : null;
         }
         public List<MessageModel> LoadMessages()
         {
