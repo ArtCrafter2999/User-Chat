@@ -91,7 +91,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
                             <Label Content="Назва чату" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Margin="10,0,10,0"/>
+                            <TextBox Text="{Binding Path=ChatCreationModel.Title}" Margin="10,0,10,0"/>
                         </StackPanel>
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
                             <StackPanel Name="AddUsersInChat" Orientation="Vertical"/>
@@ -124,7 +124,7 @@
                             <TextBox Text="{Binding Path=SearchModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                         </StackPanel>
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
-                            <StackPanel Name="FindUsers" Orientation="Vertical"/>
+                            <StackPanel Name="FoundUsers" Orientation="Vertical"/>
                         </ScrollViewer>
                     </Grid>
                 </GroupBox>

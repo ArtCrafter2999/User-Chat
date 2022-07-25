@@ -23,10 +23,12 @@ namespace Server
         {
             foreach (var user in model.Users)
             {
+                string? origTitle = model.Title;
                 if (user.Id != Handler.User.Id && IsUserOnline(user.Id))
                 {
                     var userNetwork = DataBaseHandler.NetworkOfId[user.Id];
                     userNetwork.WriteNotify(NotifyType.ChatCreated);
+                    model.Title = origTitle ?? Handler.GenerateChatName(model, user);
                     userNetwork.WriteObject(model);
                 }
             }

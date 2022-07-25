@@ -83,13 +83,20 @@ namespace UserApp.ViewModels
         {
             OnPropertyChanged(nameof(IsSelected));
             MainWindow.MessagesStack.Children.Clear();
-            if (selectedChat.PagesLoaded == 0)
+            if (selectedChat != null)
             {
-                MessagesDown(LoadMessages());
+                if (selectedChat.PagesLoaded == 0)
+                {
+                    MessagesDown(LoadMessages());
+                }
+                else
+                {
+                    MessagesDown(selectedChat.Messages);
+                }
             }
             else
             {
-                MessagesDown(selectedChat.Messages);
+                OnPropertyChanged(nameof(IsSelected));
             }
         }
     }

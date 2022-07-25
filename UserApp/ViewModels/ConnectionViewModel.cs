@@ -24,9 +24,10 @@ namespace UserApp.ViewModels
         {
             try
             {
+                var ip = ((TextBox)o).Text == "local" ? GetLocalIPAddress() : IPAddress.Parse(((TextBox)o).Text.Trim());
                 Connection.Port = 8000;
                 Connection.Client = new TcpClient();
-                Connection.Client.Connect(IPAddress.Parse(((TextBox)o).Text), Connection.Port);
+                Connection.Client.Connect(ip, Connection.Port);
                 Connection.Stream = Connection.Client.GetStream();
                 Connection.Network = new Network(Connection.Stream);
                 Connection.IsConnected = true;
@@ -41,6 +42,19 @@ namespace UserApp.ViewModels
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
+        IPAddress GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
         }
     }
 }

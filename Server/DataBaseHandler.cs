@@ -91,7 +91,10 @@ namespace Server
                 var user = db.Users.Count() > 0 ? db.Users.Where((u) => u.Login == model.Login).FirstOrDefault() : null;
                 if (user != null && user.PasswordMD5 == model.PasswordMD5)
                 {
-                    _user = user;
+                    if (!UsersOnline.Contains(user.Id))
+                        _user = user;
+                    else throw new OperationFailureExeption($"У ваш аккаунт вже виконан вхід з іншого вікна");
+
                 }
                 else
                 {
@@ -179,17 +182,26 @@ namespace Server
                         }
                     }
 
-                    MessageModel? mesageModel = null;
+                    MessageModel? messageModel = null;
                     try
                     {
-                        var messages = chat.Messages.OrderByDescending(c => c.SendTime);
-                        if (messages != null && messages.Count() > 0)
+                        var message = chat.Messages.OrderByDescending(c => c.SendTime).First();
+                        if (message != null)
                         {
-                            var message = messages.First();
-                            mesageModel = new MessageModel() // повідомлення, частина якого буде відображатися під чатом, як останне
+                            User user = db.Users.Find(message.UserId);
+                            if (user != null)
+                            messageModel = new MessageModel() // повідомлення, частина якого буде відображатися під чатом, як останне
                             {
                                 Id = message.Id,
                                 ChatId = chat.Id,
+                                User = new UserStatusModel()
+                                {
+                                    Id = user.Id,
+                                    IsOnline = IsUserOnline(user),
+                                    LastOnline = user.LastOnline,
+                                    Login = user.Login,
+                                    Name = user.Name
+                                },
                                 SendTime = message.SendTime,
                                 Text = message.Text ?? "Відправлено Файл"
                             };
@@ -202,7 +214,7 @@ namespace Server
                         Id = chat.Id,
                         Title = chat.Title ?? GenerateChatName(chat),
                         Users = userStatusModels,
-                        LastMessage = mesageModel ?? null,
+                        LastMessage = messageModel,
                         CreationDate = chat.CreationDate,
                         Unreaded = chat.UserChatRelatives.Find(ucr => ucr.User.Id == User.Id).Unreaded
                     });
@@ -212,7 +224,7 @@ namespace Server
             }
         }
 
-        private string GenerateChatName(Chat chat)
+        public string GenerateChatName(Chat chat)
         {
             var users = from User user in chat.Users
                         where user.Id != User.Id
@@ -224,7 +236,19 @@ namespace Server
             }
             return string.Join(", ", names);
         }
-        private bool IsUserOnline(User user)
+        public string GenerateChatName(ChatModel chat, UserStatusModel userexclusive)
+        {
+            var users = from UserStatusModel user in chat.Users
+                        where user.Id != userexclusive.Id
+                        select user;
+            var names = new List<string>();
+            foreach (var user in users)
+            {
+                names.Add(user.Name);
+            }
+            return string.Join(", ", names);
+        }
+        public bool IsUserOnline(User user)
         {
             return UsersOnline.Contains(user.Id);
         }

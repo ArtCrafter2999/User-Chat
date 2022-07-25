@@ -28,12 +28,28 @@ namespace UserApp.Views
         public ICommand Click { get; set; } 
         public ChatModel ChatModel { get; set; }
         public string LastMessageView => ChatModel.LastMessage != null? (ChatModel.Users.Count > 2 ? ChatModel.LastMessage.User.Name + ": " + ChatModel.LastMessage.Text : ChatModel.LastMessage.Text) : "";
+        public Brush Color 
+        { 
+            get
+            {
+                if (MainWindow.instance.ChatController.SelectedChatModel == ChatModel) return Brushes.LightSteelBlue;
+                return Brushes.SteelBlue;
+            }
+        }
         public ChatView(ChatModel chatModel)
         {
             InitializeComponent();
             DataContext = this;
             ChatModel = chatModel;
-            Click = new RelayCommand((o) => {MainWindow.instance.ChatController.SelectedChatModel = ChatModel;}, (o) => MainWindow.instance.ChatController.SelectedChatModel != ChatModel);
+            Click = new RelayCommand((o) => 
+            {
+                if (MainWindow.instance.ChatController.SelectedChatModel != ChatModel)
+                    MainWindow.instance.ChatController.SelectedChatModel = ChatModel;
+                foreach (ChatView chat in MainWindow.instance.ChatsStack.Children)
+                {
+                    chat.OnPropertyChanged(nameof(Color));
+                }
+            });
             OnPropertyChanged(nameof(ChatModel));
         }
 

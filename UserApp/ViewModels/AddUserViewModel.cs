@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using UserApp.Models;
 using Commands;
 using System.Windows.Threading;
+using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace UserApp.ViewModels
 {
@@ -15,6 +18,7 @@ namespace UserApp.ViewModels
         private bool _visibility = false;
 
         public Views.MainWindow MainWindow => Views.MainWindow.instance;
+        public ChatCreationViewModel ChatView => MainWindow.OverlayGrid.ChatCreationView;
 
         public NetModelsLibrary.Models.SearchModel SearchModel { get; set; } = new NetModelsLibrary.Models.SearchModel();
 
@@ -24,29 +28,67 @@ namespace UserApp.ViewModels
         {
             if (!MainWindow.OverlayGrid.ChatCreationView.AddedUsers.Contains((UserModel)o))
             {
-                MainWindow.OverlayGrid.ChatCreationView.AddedUsers.Add((UserModel)o);
-                MainWindow.OverlayGrid.ChatCreationView.UpdateUsersView();
+                ChatView.AddedUsers.Add((UserModel)o);
+                ChatView.UpdateUsersView();
+                UpdateUsersList();
             }
-            
         });
         public DispatcherTimer timer { get; set; }
         public AddUserViewModel()
         {
             timer = new DispatcherTimer()
             {
-                Interval = new TimeSpan(0, 0, 0, 0, 500),
+                Interval = new TimeSpan(0, 0, 0, 0, 700),
             };
             timer.Tick += (_, __) => { if (SearchModel.SearchString != null && SearchModel.SearchString != "") SearchRequestSend(); };
-            
+
         }
         public void UpdateUsersList()
         {
-            MainWindow.FindUsers.Children.Clear();
-
-            foreach (var user in Users)            {
-                var view = new Views.UserView(user) { Click = Add };
-                view.Button.CommandParameter = user;
-                MainWindow.FindUsers.Children.Add(view);
+            bool HasHiddenUsers = false;
+            var users = new List<UserModel>();
+            
+            foreach (var user in Users)
+            {
+                if (!ChatView.RelatedUsers.Contains(user) && !ChatView.AddedUsers.Contains(user))
+                {
+                    users.Add(user);
+                }
+                else
+                {
+                    HasHiddenUsers = true;
+                }
+            }
+            MainWindow.FoundUsers.Children.Clear();
+            if (users.Count == 0)
+            {
+                var Text = new TextBox()
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    FontSize = 16,
+                    Foreground = Brushes.White,
+                    FontWeight = FontWeights.SemiBold,
+                    Background = Brushes.SteelBlue
+                };
+                if (HasHiddenUsers)
+                {
+                    Text.Text = "Результати співпадаючі пошуку вже присутні";
+                    MainWindow.FoundUsers.Children.Add(Text);
+                }
+                else
+                {
+                    Text.Text = "Не знайдено результатів співпадаючих пошуку";
+                    MainWindow.FoundUsers.Children.Add(Text);
+                }
+            }
+            else
+            {
+                foreach (var user in users)
+                {
+                    var view = new Views.UserView(user) { Click = Add };
+                    view.Button.CommandParameter = user;
+                    MainWindow.FoundUsers.Children.Add(view);
+                }
             }
         }
         private string _pastResult = "";
@@ -58,14 +100,12 @@ namespace UserApp.ViewModels
                 Connection.Network.WriteRequest(NetModelsLibrary.RequestType.SearchUsers);
                 Connection.Network.WriteObject(SearchModel);
                 var allusers = Connection.Network.ReadObject<NetModelsLibrary.Models.AllUsersModel>();
-                MainWindow.Dispatcher.Invoke(() => {
-                    Users.Clear();
-                    foreach (var user in allusers.Users)
-                    {
-                        Users.Add(new UserModel(user));
-                    }
-                    UpdateUsersList();
-                });
+                Users.Clear();
+                foreach (var user in allusers.Users)
+                {
+                    Users.Add(new UserModel(user));
+                }
+                MainWindow.Dispatcher.Invoke(UpdateUsersList);
             }
         }
     }

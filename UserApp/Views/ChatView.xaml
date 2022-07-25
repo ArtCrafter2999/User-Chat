@@ -7,7 +7,7 @@
              d:DataContext="{d:DesignInstance Type=local:ChatView}"
              mc:Ignorable="d" Height="56" MinWidth="250">
     <Grid>
-        <Button Command="{Binding Click}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="SteelBlue">
+        <Button Command="{Binding Click}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{Binding Color}">
             <Grid>
                 <TextBlock Text="{Binding Path=ChatModel.Title, Mode=OneWay}" VerticalAlignment="Top" HorizontalAlignment="Stretch" Foreground="White" FontSize="15" FontWeight="DemiBold" Margin="10,12,10,0" Height="20"/>
                 <TextBlock Text="{Binding Path=ChatModel.LastTime, Mode=OneWay, StringFormat='dd.MM.yy HH:mm'}" TextAlignment="Right" Height="16" VerticalAlignment="Top" Foreground="White" FontSize="12" Margin="10,2,20,0"/>

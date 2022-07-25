@@ -38,6 +38,15 @@ namespace UserApp.ViewModels
             Connection.Network.WriteRequest(NetModelsLibrary.RequestType.CreateChat);
             Connection.Network.WriteObject(ChatCreationModel);
             if (Connection.Network.ReadObject<NetModelsLibrary.Models.ResoultModel>().Success) ChatCreated?.Invoke();
+            
+            AddedUsers.Clear();
+            ChatCreationModel = new NetModelsLibrary.Models.ChatCreationModel();
+            AddUserView.Visibility = false;
+            AddUserView.Users.Clear();
+            AddUserView.SearchModel.SearchString = "";
+            AddUserView.timer.Stop();
+            AddUserView.OnPropertyChanged(nameof(AddUserView.Visibility));
+            AddUserView.OnPropertyChanged(nameof(AddUserView.SearchModel));
         }, o => AddedUsers.Count > 0);
 
         public ICommand AddUser => new RelayCommand(o =>
@@ -59,7 +68,7 @@ namespace UserApp.ViewModels
         public ChatCreationViewModel()
         {
             AddUserView = new AddUserViewModel();
-            ChatCreated += MainWindow.UpdateChatView;
+            ChatCreated += () => { MainWindow.instance.ChatController.SelectedChatModel = null; MainWindow.UpdateChatView(); };
         }
         public void UpdateUsersView()
         {

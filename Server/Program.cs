@@ -8,7 +8,7 @@ try
 {
     listener = new TcpListener(GetLocalIPAddress(), port);
     listener.Start();
-    Console.WriteLine($"Waiting for connections...\nEnd-point: {GetLocalIPAddress()}:{port}");
+    Console.WriteLine($"Waiting for connections...\nEnd-point: {GetLocalIPAddress()}");
 
     while (true)
     {
