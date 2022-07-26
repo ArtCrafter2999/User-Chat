@@ -10,8 +10,13 @@ namespace NetModelsLibrary
     {
         /// <summary>
         /// Notify about chat with the user has been created.
-        /// Sendі the created ChatModel
+        /// Send the created ChatModel
         /// </summary>
         ChatCreated,
+        /// <summary>
+        /// Notify that someone has sent a message to one of the chats
+        /// Send the sended MessageModel
+        /// </summary>
+        MessageSended,
     }
 }

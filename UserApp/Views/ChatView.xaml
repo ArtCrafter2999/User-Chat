@@ -4,14 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserApp.Views"
+             xmlns:root="clr-namespace:UserApp"
              d:DataContext="{d:DesignInstance Type=local:ChatView}"
              mc:Ignorable="d" Height="56" MinWidth="250">
+    <UserControl.Resources>
+        <root:BoolToVisibility x:Key="VisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Button Command="{Binding Click}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="{Binding Color}">
             <Grid>
-                <TextBlock Text="{Binding Path=ChatModel.Title, Mode=OneWay}" VerticalAlignment="Top" HorizontalAlignment="Stretch" Foreground="White" FontSize="15" FontWeight="DemiBold" Margin="10,12,10,0" Height="20"/>
+                <TextBlock Text="{Binding Path=ChatModel.Title, Mode=OneWay}" VerticalAlignment="Top" Foreground="White" FontSize="15" FontWeight="DemiBold" Margin="10,12,30,0" Height="20"/>
                 <TextBlock Text="{Binding Path=ChatModel.LastTime, Mode=OneWay, StringFormat='dd.MM.yy HH:mm'}" TextAlignment="Right" Height="16" VerticalAlignment="Top" Foreground="White" FontSize="12" Margin="10,2,20,0"/>
                 <TextBlock Text="{Binding Path=LastMessageView, Mode=OneWay}" TextAlignment="Left" Height="16" VerticalAlignment="Bottom" Foreground="White" FontSize="12" Margin="10,0,10,0"/>
+                <Canvas Visibility="{Binding Path=IsUnreaded, Converter={StaticResource VisibilityConverter}}" Width="15" Height="15" Margin="211,17,20,20">
+                    <Ellipse Width="15" Height="15" Fill="#2a4e6c"/>
+                    <TextBlock Text="{Binding Path=Unreaded}" Foreground="white" HorizontalAlignment="Left" Canvas.Left="1" VerticalAlignment="Center"/>
+                </Canvas>
+                <Canvas Visibility="{Binding Path=IsOnline, Converter={StaticResource VisibilityConverter}}" Width="11" Height="11" Margin="0,0,231,37">
+                    <Ellipse Width="11" Height="11" Fill="White"/>
+                </Canvas>
             </Grid>
         </Button>
     </Grid>

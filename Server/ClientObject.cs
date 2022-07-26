@@ -78,6 +78,12 @@ namespace Server
                                 case RequestType.GetPageOfMessages:
                                     handler.GetPageOfMessages(network.ReadObject<GetMessagesInfoModel>());
                                     break;
+                                case RequestType.ReadUnreaded:
+                                    handler.ReadUnreaded(network.ReadObject<IdModel>());
+                                    break;
+                                case RequestType.MarkReaded:
+                                    handler.MarkReaded(network.ReadObject<IdModel>());
+                                    break;
                                 default:
                                     break;
                             }

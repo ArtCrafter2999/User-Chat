@@ -45,15 +45,19 @@ namespace UserApp.Controllers
                 ChatModels.Add(new ChatModel(NetChatModel));
             }
         }
-        public NetModelsLibrary.Models.MessagesPageModel LoadMessages(int Page)
+        public NetModelsLibrary.Models.MessagesPageModel LoadMessages(int From)
         {
-            Connection.Network.WriteRequest(NetModelsLibrary.RequestType.GetPageOfMessages);
-            Connection.Network.WriteObject(new NetModelsLibrary.Models.GetMessagesInfoModel()
+            if (!SelectedChatModel.IsEnd)
             {
-                ChatId = SelectedChatModel.Id,
-                PageNumber = Page
-            });
-            return Connection.Network.ReadObject<NetModelsLibrary.Models.MessagesPageModel>();
+                Connection.Network.WriteRequest(NetModelsLibrary.RequestType.GetPageOfMessages);
+                Connection.Network.WriteObject(new NetModelsLibrary.Models.GetMessagesInfoModel()
+                {
+                    ChatId = SelectedChatModel.Id,
+                    From = From
+                });
+                return Connection.Network.ReadObject<NetModelsLibrary.Models.MessagesPageModel>();
+            }
+            return new NetModelsLibrary.Models.MessagesPageModel() { Messages = new List<NetModelsLibrary.Models.MessageModel>(), From = From, To = From};
         }
         public void SendMessage(NetModelsLibrary.Models.MessageModel message)
         {

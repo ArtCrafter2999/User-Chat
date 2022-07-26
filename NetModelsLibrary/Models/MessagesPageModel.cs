@@ -9,7 +9,8 @@ namespace NetModelsLibrary.Models
     public class MessagesPageModel
     {
         public List<MessageModel> Messages { get; set; } = new List<MessageModel>();
-        public int PageNumber { get; set; }
+        public int From { get; set; }
+        public int To { get; set; }
         public bool IsEnd { get; set; } = false;
     }
 }

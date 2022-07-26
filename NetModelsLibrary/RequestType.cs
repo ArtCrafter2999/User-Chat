@@ -44,10 +44,22 @@ namespace NetModelsLibrary
         /// </summary>
         SearchUsers,
         /// <summary>
-        /// page by page to get messages
+        /// Page by page to get messages
         /// After this server expects that sequence of requests:
         /// Expects GetMessagesInfoModel returns MessagesPageModel
         /// </summary>
-        GetPageOfMessages
+        GetPageOfMessages,
+        /// <summary>
+        /// Get all unreaded messages and mark them readed
+        /// After this server expects that sequence of requests:
+        /// Expects IdModel witch is chat id and returns MessagesPageModel
+        /// </summary>
+        ReadUnreaded,
+        /// <summary>
+        /// Mark all unreaded messages as readed
+        /// After this server expects that sequence of requests:
+        /// Expects IdModel witch is chat id. Returns nothing
+        /// </summary>
+        MarkReaded
     }
 }

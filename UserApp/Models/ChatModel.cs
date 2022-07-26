@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NetModelsLibrary.Models;
+using UserApp.Views;
 
 namespace UserApp.Models
 {
@@ -12,10 +13,10 @@ namespace UserApp.Models
         private NetModelsLibrary.Models.ChatModel _chat;
         public int Id => _chat.Id;
         public string Title => _chat.Title;
-        public int UnridedMessageCount => throw new NotImplementedException();
+        public int UnreadedMessageCount { get => _chat.Unreaded; set { _chat.Unreaded = value; } }
         public List<MessageModel> Messages { get; set; } = new List<MessageModel>();
-        public int PagesLoaded = 0;
-        public bool IsEndPage = false;
+        public int Loaded = 0;
+        public bool IsEnd = false;
         public List<UserModel> Users
         {
             get
@@ -30,10 +31,10 @@ namespace UserApp.Models
         }
         public DateTime LastTime => _lastMessage != null ? _lastMessage.SendTime : _chat.CreationDate;
         public MessageModel? LastMessage {
-            get 
+            get
             {
                 return _chat.LastMessage != null ? _lastMessage : null;
-            } 
+            }
             set
             {
                 _lastMessage = value;
@@ -49,5 +50,6 @@ namespace UserApp.Models
         {
             throw new NotImplementedException();
         }
+        public ChatView? ChatView { get; set; }
     }
 }

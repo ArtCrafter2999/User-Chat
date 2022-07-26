@@ -136,11 +136,26 @@ namespace Server
                     db.SaveChanges();
                     model.Id = message.Id;
                     network.WriteObject(model);
+                    var chat = db.Chats.Include(c => c.Users).Where(c => c.Id == model.ChatId).First();
+                    Notifyer.MessageSended(model, chat);
                 }
             }
             catch (OperationFailureExeption)
             {
                 throw new OperationFailureExeption("Unable to send message from unregistered user");
+            }
+        }
+        public void AddUnreaded(int chatId, int userId)
+        {
+            using (var db = new ServerDbContext())
+            {
+                var rel = (from UserChatRelative ucr in (from Chat c in db.Chats.Include(c => c.UserChatRelatives)
+                                                        where c.Id == chatId
+                                                        select c).First().UserChatRelatives
+                          where ucr.UserId == userId
+                          select ucr).First();
+                rel.Unreaded++;
+                db.SaveChanges();
             }
         }
 
@@ -372,21 +387,23 @@ namespace Server
         public const int PageSize = 20; 
         public void GetPageOfMessages(GetMessagesInfoModel model)
         {
-            Console.WriteLine($"{User.Login}({User.Id}) Request to get messages in range {model.PageNumber * PageSize}-{model.PageNumber+1 * PageSize} from chat ({model.ChatId})");
+            Console.WriteLine($"{User.Login}({User.Id}) Request to get messages in range {model.From}-{model.From + PageSize} from chat ({model.ChatId})");
             using (var db = new ServerDbContext())
             {
                 var page = new MessagesPageModel()
                 {
-                    PageNumber = model.PageNumber + 1
+                    From = model.From
                 };
                 var messages = db.Messages
                     .Include(m => m.Chat)
                     .Include(m => m.User)
                     .Where(m => m.ChatId == model.ChatId)
                     .OrderByDescending(m => m.SendTime)
-                    .Skip(model.PageNumber * PageSize)
+                    .Skip(model.From)
                     .Take(PageSize);
-                if (messages.Count() < PageSize) page.IsEnd = true;
+                var count = messages.Count();
+                if (count < PageSize) page.IsEnd = true;
+                page.To = model.From + count;
                 foreach (var message in messages)
                 {
                     page.Messages.Add(new MessageModel()
@@ -410,5 +427,64 @@ namespace Server
             }
         }
 
+        public void ReadUnreaded(IdModel idModel)
+        {
+            using (var db = new ServerDbContext())
+            {
+                var rel = (from UserChatRelative ucr in (from Chat c in db.Chats.Include(c => c.UserChatRelatives)
+                                                         where c.Id == idModel.Id
+                                                         select c).First().UserChatRelatives
+                           where ucr.UserId == User.Id
+                           select ucr).First();
+                var page = new MessagesPageModel()
+                {
+                    From = 0,
+                    To = rel.Unreaded + PageSize
+                };
+                var messages = db.Messages
+                    .Include(m => m.Chat)
+                    .Include(m => m.User)
+                    .Where(m => m.ChatId == idModel.Id)
+                    .OrderByDescending(m => m.SendTime)
+                    .Take(page.To);
+                var count = messages.Count();
+                if (count < PageSize) page.IsEnd = true;
+                page.To = count;
+                foreach (var message in messages)
+                {
+                    page.Messages.Add(new MessageModel()
+                    {
+                        ChatId = idModel.Id,
+                        Id = message.Id,
+                        SendTime = message.SendTime,
+                        Text = message.Text,
+                        User = new UserStatusModel
+                        {
+                            Id = message.UserId,
+                            IsOnline = IsUserOnline(message.User),
+                            LastOnline = message.User.LastOnline,
+                            Login = message.User.Login,
+                            Name = message.User.Name
+                        }
+                    });
+                }
+                rel.Unreaded = 0;
+                db.SaveChanges();
+                network.WriteObject(page);
+            }
+        }
+        public void MarkReaded(IdModel idModel)
+        {
+            using (var db = new ServerDbContext())
+            {
+                var rel = (from UserChatRelative ucr in (from Chat c in db.Chats.Include(c => c.UserChatRelatives)
+                                                         where c.Id == idModel.Id
+                                                         select c).First().UserChatRelatives
+                           where ucr.UserId == User.Id
+                           select ucr).First();
+                rel.Unreaded = 0;
+                db.SaveChanges();
+            }
+        }
     }
 }

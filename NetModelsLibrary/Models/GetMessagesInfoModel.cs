@@ -10,6 +10,6 @@ namespace NetModelsLibrary.Models
     {
         public int ChatId { get; set; }
         //public int PageMessagesCount { get; set; }
-        public int PageNumber { get; set; }
+        public int From { get; set; }
     }
 }

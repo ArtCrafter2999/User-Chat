@@ -44,16 +44,16 @@ namespace UserApp.Controllers
         }
         public override T ReadObject<T>()
         {
-            try
+            var Tname = typeof(T).Name; // отримати назву того типу, який нам саме і потрібен для подальшого порівняння
+            do
             {
-                var Tname = typeof(T).Name; // отримати назву того типу, який нам саме і потрібен для подальшого порівняння
-                do
+                try
                 {
                     string? res = null;
                     for (int i = 0; i < stack.Count; i++)
                     {
                         //перевірка співпадіння записів у стеку
-                        if (stack[i]!=null)
+                        if (stack[i] != null)
                         {
                             if (Tname == TypeRegEx.Match(stack[i]).Groups[1].Value)
                             {
@@ -63,19 +63,18 @@ namespace UserApp.Controllers
                                 return base.ReadObject<T>(res);
                             }
                         }
-                        
+
                     }
-                } while (true);
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(
-                    ex.Message + ex.StackTrace,
-                    "Exeption", System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Error);
-                throw;
-            }
-            
+                }
+                catch (Exception ex)
+                {
+                    //System.Windows.MessageBox.Show(
+                    //    ex.Message + ex.StackTrace,
+                    //    "Exeption", System.Windows.MessageBoxButton.OK,
+                    //    System.Windows.MessageBoxImage.Error);
+                    //throw;
+                }
+            } while (true);
         }
     }
 }

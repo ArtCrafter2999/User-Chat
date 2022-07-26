@@ -76,7 +76,9 @@ namespace UserApp.Views
             ChatController.ChatModels.Sort((a, b) => a.LastTime < b.LastTime ? 1 : -1);
             foreach (var model in ChatController.ChatModels)
             {
-                ChatsStack.Children.Add(new ChatView(model) { IsEnabled = ChatView.IsSelected? model.Id == ChatController.SelectedChatModel.Id : true});
+                var view = new ChatView(model);
+                model.ChatView = view;
+                ChatsStack.Children.Add(view);
             }
         }
 

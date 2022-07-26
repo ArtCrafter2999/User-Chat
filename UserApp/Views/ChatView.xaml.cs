@@ -36,6 +36,10 @@ namespace UserApp.Views
                 return Brushes.SteelBlue;
             }
         }
+        public int Unreaded { get { return ChatModel.UnreadedMessageCount; } set { ChatModel.UnreadedMessageCount = value; OnPropertyChanged(nameof(Unreaded)); OnPropertyChanged(nameof(IsUnreaded)); } }
+        public bool IsUnreaded => Unreaded > 0;
+        public bool IsOnline => ChatModel.Users.Count == 2 ?
+            ChatModel.Users.First(u => u.Id != MainWindow.instance.ChatController.SelfUser.Id).IsOnline : false;
         public ChatView(ChatModel chatModel)
         {
             InitializeComponent();

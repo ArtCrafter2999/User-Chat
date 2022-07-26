@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using NetModelsLibrary.Models;
 using UserApp.Views;
 using System.Windows.Threading;
+using System.Windows;
 #pragma warning disable SYSLIB0006
 
 namespace UserApp.Controllers
@@ -41,6 +42,9 @@ namespace UserApp.Controllers
                             case NotifyType.ChatCreated:
                                 ChatCreated(Connection.Network.ReadObject<ChatModel>());
                                 break;
+                            case NotifyType.MessageSended:
+                                MessageSended(Connection.Network.ReadObject<MessageModel>());
+                                break;
                             default:
                                 break;
                         }
@@ -57,6 +61,24 @@ namespace UserApp.Controllers
             {
                 ChatController.ChatModels.Add(new Models.ChatModel(model));
                 MainWindow.SortChats();
+            });
+        }
+        public void MessageSended(MessageModel model)
+        {
+            MainWindow.Dispatcher.Invoke(() =>
+            {
+                if (MainWindow.ChatView.IsSelected && model.ChatId == ChatController.SelectedChatModel.Id)
+                {
+                    Connection.Network.WriteRequest(RequestType.MarkReaded);
+                    Connection.Network.WriteObject(new IdModel(model.ChatId));
+                    MainWindow.ChatView.MessageDown(new Models.MessageModel(model));
+                    ChatController.SelectedChatModel.ChatView.Unreaded = 0;
+                }
+                else
+                {
+                    var chat = ChatController.ChatModels.Find(c => c.Id == model.ChatId);
+                    chat.ChatView.Unreaded++;
+                }
             });
         }
     }

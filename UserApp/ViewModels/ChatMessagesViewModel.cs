@@ -27,28 +27,31 @@ namespace UserApp.ViewModels
 
         private void CheckTop(object sender, ScrollChangedEventArgs e)
         {
-            if (selectedChat != null && e.VerticalOffset == 0 && !selectedChat.IsEndPage)
+            if (selectedChat != null && e.VerticalChange < 0 && e.VerticalOffset == 0 && !selectedChat.IsEnd)
             {
                 MessagesUp(LoadMessages());
             }
         }
         public List<MessageModel> LoadMessages()
         {
-            var messagespage = Controller.LoadMessages(selectedChat.PagesLoaded);
-            selectedChat.PagesLoaded++;
-            var newmessages = new List<MessageModel>();
-            foreach (var message in messagespage.Messages)
+            if (!selectedChat.IsEnd)
             {
-                selectedChat.Messages.Insert(0, new MessageModel(message));
-                newmessages.Insert(0, new MessageModel(message));
+                var messagespage = Controller.LoadMessages(selectedChat.Loaded);
+                if(messagespage.From != messagespage.To)
+                {
+                    selectedChat.Loaded += messagespage.To;
+                    selectedChat.IsEnd = messagespage.IsEnd;
+                    var newmessages = new List<MessageModel>();
+                    foreach (var message in messagespage.Messages)
+                    {
+                        selectedChat.Messages.Insert(0, new MessageModel(message));
+                        newmessages.Add(new MessageModel(message));
+                    }
+                    newmessages.Reverse();
+                    return newmessages;
+                }
             }
-            selectedChat.IsEndPage = messagespage.IsEnd;
-            MainWindow.MessageScroll.ScrollToVerticalOffset(
-                MainWindow.MessageScroll.ScrollableHeight /
-                selectedChat.PagesLoaded *
-                (selectedChat.PagesLoaded - 1)
-            );
-            return newmessages;
+            return new List<MessageModel>();
         }
 
         public void MessagesUp(List<MessageModel> NewMessages)
@@ -56,8 +59,17 @@ namespace UserApp.ViewModels
             int index = 0;
             foreach (var message in NewMessages)
             {
-                MainWindow.MessagesStack.Children.Insert(index++, new MessageView(message));
+                var view = new MessageView(message);
+                MainWindow.MessagesStack.Children.Insert(index++, view);
             }
+            MainWindow.MessagesStack.UpdateLayout();
+            MainWindow.MessageScroll.UpdateLayout();
+            MainWindow.Dispatcher.Invoke(() =>
+            {
+                MainWindow.MessageScroll.ScrollToVerticalOffset(MainWindow.MessageScroll.ScrollableHeight / selectedChat.Loaded * NewMessages.Count);
+                MainWindow.MessageScroll.UpdateLayout();
+            });
+            
         }
 
         public void MessagesDown(List<MessageModel> NewMessages)
@@ -67,16 +79,26 @@ namespace UserApp.ViewModels
                 MainWindow.MessagesStack.Children.Add(new MessageView(message));
             }
         }
+        public void MessagesDownWithScroll(List<MessageModel> NewMessages)
+        {
+            foreach (var message in NewMessages)
+            {
+                MainWindow.MessagesStack.Children.Add(new MessageView(message));
+            }
+
+            MainWindow.MessageScroll.ScrollToEnd();
+            MainWindow.MessageScroll.UpdateLayout();
+        }
 
         public void MessageDown(MessageModel message)
         {
             bool scroll = false;
             if (MainWindow.MessageScroll.VerticalOffset == MainWindow.MessageScroll.ScrollableHeight) scroll = true;
             MainWindow.MessagesStack.Children.Add(new MessageView(message));
-            if (scroll) 
-            { 
+            if (scroll)
+            {
                 MainWindow.MessageScroll.ScrollToEnd();
-                MainWindow.MessageScroll.UpdateLayout(); 
+                MainWindow.MessageScroll.UpdateLayout();
             }
         }
         public void ChatChanged()
@@ -85,19 +107,41 @@ namespace UserApp.ViewModels
             MainWindow.MessagesStack.Children.Clear();
             if (selectedChat != null)
             {
-                if (selectedChat.PagesLoaded == 0)
+                if (selectedChat.UnreadedMessageCount > 0)
                 {
-                    MessagesDown(LoadMessages());
+                    MessagesDown(ReadUnreaded());
+                }
+                else if (selectedChat.Loaded == 0)
+                {
+                    MessagesDownWithScroll(LoadMessages());
                 }
                 else
                 {
-                    MessagesDown(selectedChat.Messages);
+                    MessagesDownWithScroll(selectedChat.Messages);
                 }
             }
             else
             {
                 OnPropertyChanged(nameof(IsSelected));
             }
+        }
+
+        private List<MessageModel> ReadUnreaded()
+        {
+            Connection.Network.WriteRequest(NetModelsLibrary.RequestType.ReadUnreaded);
+            Connection.Network.WriteObject(new NetModelsLibrary.Models.IdModel(selectedChat.Id));
+            var page = Connection.Network.ReadObject<NetModelsLibrary.Models.MessagesPageModel>();
+            selectedChat.ChatView.Unreaded = 0;
+
+            selectedChat.Loaded = page.To;
+            var list = new List<MessageModel>();
+            foreach (var message in page.Messages)
+            {
+                list.Add(new MessageModel(message));
+                selectedChat.Messages.Insert(0, new MessageModel(message));
+            }
+            list.Reverse();
+            return list;
         }
     }
 }
