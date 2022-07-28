@@ -14,5 +14,14 @@ namespace NetModelsLibrary.Models
         public string? Text { get; set; }
         public List<FileInfoModel> Files { get; set; } = new List<FileInfoModel>();
         public UserStatusModel User { get; set; }
+        public MessageModel(){}
+        public MessageModel(ServerDatabase.Message message, bool isOnline)
+        {
+            Id = message.Id;
+            ChatId = message.ChatId;
+            SendTime = message.SendTime;
+            Text = message.Text;
+            User = new UserStatusModel(message.User, isOnline);
+        }
     }
 }

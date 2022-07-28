@@ -13,5 +13,14 @@ namespace NetModelsLibrary.Models
         public string Login { get; set; }
         public bool IsOnline { get; set; }
         public DateTime? LastOnline { get; set; }
+        public UserStatusModel(){}
+        public UserStatusModel(ServerDatabase.User user, bool isOnline)
+        {
+            Id = user.Id;
+            Name = user.Name;
+            Login = user.Login;
+            LastOnline = user.LastOnline;
+            IsOnline = isOnline;
+        }
     }
 }

@@ -22,17 +22,24 @@
             <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"
                 CornerRadius="10,10,10,10" BorderBrush="White" Background="#1c3448">
             </Border>
-            <TextBlock TextWrapping="WrapWithOverflow" Margin="5" Foreground="White" 
+            <TextBlock TextWrapping="NoWrap" Margin="5,0,5,15" Foreground="White" 
+                Text="{Binding Path=MessageModel.User.Name}"
+                       FontWeight="bold"/>
+            <TextBlock TextWrapping="WrapWithOverflow" Margin="5,10,5,5" Foreground="White" 
                 Text="{Binding Path=MessageModel.Text}"
                        />
             <!--{Binding Path=MessageModel.Text}-->
         </Grid>
         <Grid Visibility="{Binding Path=IsMyMessage, Converter={StaticResource VisibilityConverter}}"
               Grid.Column="1" Width="{Binding Path=HalfWidth}">
+            <!--#FF5A9AE0-->
             <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"
                 CornerRadius="10,10,10,10" BorderBrush="White" Background="#FF5A9AE0">
             </Border>
-            <TextBlock TextWrapping="WrapWithOverflow" Margin="5" Foreground="White" 
+            <TextBlock TextWrapping="NoWrap" Margin="5,0,5,15" Foreground="White" 
+                Text="{Binding Path=MessageModel.User.Name}"
+                       FontWeight="bold"/>
+            <TextBlock TextWrapping="WrapWithOverflow" Margin="5,10,5,5" Foreground="White" 
                 Text="{Binding Path=MessageModel.Text}"
                        />
         </Grid>

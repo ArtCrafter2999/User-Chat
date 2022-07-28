@@ -10,7 +10,7 @@ namespace UserApp.Models
 {
     public class MessageModel
     {
-        private NetModelsLibrary.Models.MessageModel _message;
+        public NetModelsLibrary.Models.MessageModel _message;
         public int? Id => _message.Id;
         public int ChatId => _message.ChatId;
         public ChatModel? Chat => MainWindow.instance.ChatController.ChatModels.Find(c => c.Id == ChatId);

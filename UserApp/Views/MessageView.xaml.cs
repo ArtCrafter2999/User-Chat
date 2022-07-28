@@ -27,7 +27,7 @@ namespace UserApp.Views
     {
         public MessageModel MessageModel { get; set; }
         public double HalfWidth => Width / 4;
-        public bool IsMyMessage => MainWindow.instance.ChatController.SelfUser == MessageModel.User;
+        public bool IsMyMessage => MainWindow.instance.ChatController.SelfUser.Id == MessageModel.User.Id;
         public bool IsOthersMessage => !IsMyMessage;
 
         public MessageView(MessageModel messageModel)

@@ -22,6 +22,7 @@ namespace UserApp.ViewModels
         public MainWindow MainWindow => MainWindow.instance;
 
         public NetModelsLibrary.Models.ChatCreationModel ChatCreationModel { get; set; } = new NetModelsLibrary.Models.ChatCreationModel();
+        public NetModelsLibrary.Models.ChatChangeModel ChatChangeModel { get; set; } = new NetModelsLibrary.Models.ChatChangeModel();
 
         public List<UserModel> RelatedUsers { get; set; } = new List<UserModel>();
         public List<UserModel> AddedUsers { get; set; } = new List<UserModel>();
@@ -38,15 +39,16 @@ namespace UserApp.ViewModels
             Connection.Network.WriteRequest(NetModelsLibrary.RequestType.CreateChat);
             Connection.Network.WriteObject(ChatCreationModel);
             if (Connection.Network.ReadObject<NetModelsLibrary.Models.ResoultModel>().Success) ChatCreated?.Invoke();
-            
+
+            MainWindow.OverlayGrid.HideAll();
             AddedUsers.Clear();
             ChatCreationModel = new NetModelsLibrary.Models.ChatCreationModel();
-            AddUserView.Visibility = false;
             AddUserView.Users.Clear();
             AddUserView.SearchModel.SearchString = "";
             AddUserView.timer.Stop();
-            AddUserView.OnPropertyChanged(nameof(AddUserView.Visibility));
             AddUserView.OnPropertyChanged(nameof(AddUserView.SearchModel));
+
+            TurnOffChangeMode();
         }, o => AddedUsers.Count > 0);
 
         public ICommand AddUser => new RelayCommand(o =>
@@ -59,17 +61,75 @@ namespace UserApp.ViewModels
         });
         public ICommand Cancel => new RelayCommand(o =>
         {
-            AddUserView.Visibility = false;
-            Visibility = false;
-            AddUserView.timer.Stop();
             MainWindow.OverlayGrid.HideAll();
+            AddedUsers.Clear();
+            ChatCreationModel = new NetModelsLibrary.Models.ChatCreationModel();
+            AddUserView.Users.Clear();
+            AddUserView.SearchModel.SearchString = "";
+            AddUserView.timer.Stop();
+            AddUserView.OnPropertyChanged(nameof(AddUserView.SearchModel));
+            TurnOffChangeMode();
+        });
+        public ICommand Change => new RelayCommand(o =>
+        {
+            ChatChangeModel.Users = new List<NetModelsLibrary.Models.IdModel>();
+            ChatChangeModel.Title = ChatCreationModel.Title;
+            foreach (var user in AddedUsers)
+            {
+                ChatChangeModel.Users.Add(new NetModelsLibrary.Models.IdModel(user.Id));
+            }
+            Connection.Network.WriteRequest(NetModelsLibrary.RequestType.ChangeChat);
+            Connection.Network.WriteObject(ChatChangeModel);
+
+            MainWindow.ChatController.SelectedChatModel = null;
+            MainWindow.OverlayGrid.HideAll();
+            AddedUsers.Clear();
+            ChatCreationModel = new NetModelsLibrary.Models.ChatCreationModel();
+            AddUserView.Users.Clear();
+            AddUserView.SearchModel.SearchString = "";
+            AddUserView.timer.Stop();
+            AddUserView.OnPropertyChanged(nameof(AddUserView.SearchModel));
+            TurnOffChangeMode();
+        }, o => AddedUsers.Count > 0);
+        public ICommand Delete => new RelayCommand(o =>
+        {
+            Connection.Network.WriteRequest(NetModelsLibrary.RequestType.DeleteChat);
+            Connection.Network.WriteObject(new NetModelsLibrary.Models.IdModel(ChatChangeModel.Id));
+
+            MainWindow.ChatController.SelectedChatModel = null;
+            MainWindow.OverlayGrid.HideAll();
+            AddedUsers.Clear();
+            ChatCreationModel = new NetModelsLibrary.Models.ChatCreationModel();
+            AddUserView.Users.Clear();
+            AddUserView.SearchModel.SearchString = "";
+            AddUserView.timer.Stop();
+            AddUserView.OnPropertyChanged(nameof(AddUserView.SearchModel));
+            TurnOffChangeMode();
         });
 
         public ChatCreationViewModel()
         {
             AddUserView = new AddUserViewModel();
             ChatCreated += () => { MainWindow.instance.ChatController.SelectedChatModel = null; MainWindow.UpdateChatView(); };
+            TurnOffChangeMode();
         }
+
+        public void TurnChangeMode(int id)
+        {
+            ChatChangeModel.Id = id;
+            MainWindow.ChangeButtons.Visibility = System.Windows.Visibility.Visible;
+            MainWindow.CreationButtons.Visibility = System.Windows.Visibility.Hidden;
+            MainWindow.CenterGroupBox.Header = "Змінення чату";
+            OnPropertyChanged(nameof(ChatCreationModel));
+        }
+        public void TurnOffChangeMode()
+        {
+            MainWindow.ChangeButtons.Visibility = System.Windows.Visibility.Hidden;
+            MainWindow.CreationButtons.Visibility = System.Windows.Visibility.Visible;
+            MainWindow.CenterGroupBox.Header = "Створення нового чату";
+            OnPropertyChanged(nameof(ChatCreationModel));
+        }
+
         public void UpdateUsersView()
         {
             RelatedUsers.Clear();
@@ -77,7 +137,7 @@ namespace UserApp.ViewModels
             {
                 foreach (var user in chat.Users)
                 {
-                    if (!AddedUsers.Contains(user) && !RelatedUsers.Contains(user) && MainWindow.ChatController.SelfUser != user) RelatedUsers.Add(user);
+                    if (!AddedUsers.Contains(user) && !RelatedUsers.Contains(user) && MainWindow.ChatController.SelfUser.Id != user.Id) RelatedUsers.Add(user);
                 }
             }
             RelatedUsers.Sort((a, b) => string.Compare(a.Name, b.Name));
@@ -111,6 +171,7 @@ namespace UserApp.ViewModels
                     Click = new RelayCommand(o =>
                     {
                         AddedUsers.Remove(user);
+                        AddUserView.UpdateUsersList();
                         UpdateUsersView();
                     })
                 });

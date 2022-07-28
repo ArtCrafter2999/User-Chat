@@ -38,7 +38,22 @@ namespace UserApp.Views
             OverlayGrid.Visibility = true;
             OverlayGrid.ChatCreationView.Visibility = true;
             OverlayGrid.ChatCreationView.UpdateUsersView();
-            OverlayGrid.ChatCreationView.ChatCreated += OverlayGrid.HideAll;
+        });
+        public ICommand ChangeChat => new RelayCommand(o =>
+        {
+            if (ChatController.SelectedChatModel != null)
+            {
+                OverlayGrid.Visibility = true;
+                OverlayGrid.ChatCreationView.Visibility = true;
+                OverlayGrid.ChatCreationView.ChatCreationModel.Title = 
+                    ChatController.SelectedChatModel.IsTrueTitle ? 
+                        ChatController.SelectedChatModel.Title :
+                            null;
+                OverlayGrid.ChatCreationView.AddedUsers = new List<UserModel>(from UserModel u in ChatController.SelectedChatModel.Users
+                                                                              where u.Id != ChatController.SelfUser.Id select u);
+                OverlayGrid.ChatCreationView.UpdateUsersView();
+                OverlayGrid.ChatCreationView.TurnChangeMode(ChatController.SelectedChatModel.Id);
+            }
         });
 
         public MainWindow()
@@ -52,6 +67,7 @@ namespace UserApp.Views
             ChatController = new ChatController();
             ChatView = new ChatMessagesViewModel();
 
+
             ChatController.MessageSended += m =>
             {
                 if (m.Chat != null)
@@ -62,6 +78,8 @@ namespace UserApp.Views
             };
 
             OverlayGrid.AuthView.Success += _ => UpdateChatView();
+
+            IpAddress.Focus();
         }
 
         public void UpdateChatView()
@@ -79,6 +97,7 @@ namespace UserApp.Views
                 var view = new ChatView(model);
                 model.ChatView = view;
                 ChatsStack.Children.Add(view);
+                view.OnPropertyChanged(nameof(view.Color));
             }
         }
 
@@ -88,6 +107,30 @@ namespace UserApp.Views
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
+        private void EnterMoveNextFocus(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                var control = sender as Control;
+                if (control == IpAddress) {if (ConBtn.Command.CanExecute(IpAddress)) { 
+                        ConBtn.Command.Execute(IpAddress);
+                        AuthLogin.Focus();
+                    }
+                }
+
+                if (control == AuthLogin) AuthPassword.Focus();
+                if (control == AuthPassword) if (AuthBtn.Command.CanExecute(AuthPassword)) 
+                        AuthBtn.Command.Execute(AuthPassword);
+                if (control == RegLogin) RegPassword.Focus();
+                if (control == RegPassword) RegName.Focus();
+                if (control == RegName) if (RegBtn.Command.CanExecute(RegPassword)) 
+                        RegBtn.Command.Execute(RegPassword);
+            }
+            if (e.Key == Key.Tab)
+            {
+
+            }
+        }
 
         private void ChatTextBox_KeyDown(object sender, KeyEventArgs e)
         {

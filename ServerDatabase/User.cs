@@ -10,6 +10,7 @@ namespace ServerDatabase
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string SearchName { get; set; }
 
         public string Login { get; set; }
         public string PasswordMD5 { get; set; }

@@ -33,8 +33,7 @@ namespace NetModelsLibrary
         /// <summary>
         /// Request to create chat
         /// After this server expects that sequence of requests:
-        /// Expects AuthModel returns ResoultModel 
-        /// and then, if success, returns ChatModel  
+        /// Expects ChatCreateModel returns ResoultModel 
         /// </summary>
         CreateChat,
         /// <summary>
@@ -60,6 +59,18 @@ namespace NetModelsLibrary
         /// After this server expects that sequence of requests:
         /// Expects IdModel witch is chat id. Returns nothing
         /// </summary>
-        MarkReaded
+        MarkReaded,
+        /// <summary>
+        /// Request to change chat
+        /// After this server expects that sequence of requests:
+        /// Expects ChatChangeModel. Returns nothing  
+        /// </summary>
+        ChangeChat,
+        /// <summary>
+        /// Request to delete chat
+        /// After this server expects that sequence of requests:
+        /// Expects IdModel witch is chat id. Returns nothing  
+        /// </summary>
+        DeleteChat
     }
 }

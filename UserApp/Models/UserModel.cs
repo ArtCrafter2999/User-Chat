@@ -14,23 +14,21 @@ namespace UserApp.Models
         public string Name => _user.Name;
         public string Login => _user.Login;
         public string LoginString => $"{_user.Login}({_user.Id})";
-        public bool IsOnline => _user.IsOnline;
+        public bool IsOnline { get => _user.IsOnline; set { _user.IsOnline = value; } }
         public DateTime? LastOnline => _user.LastOnline;
         public UserModel(UserStatusModel model)
         {
+            SetUser(model);
+        }
+        public void SetUser(UserStatusModel model)
+        {
             _user = model;
         }
-        public static bool operator ==(UserModel left, UserModel right)
-        {
-            return left.Id == right.Id;
-        }
-        public static bool operator !=(UserModel left, UserModel right)
-        {
-            return left.Id != right.Id;
-        }
+        public Views.UserView UserView { get; set; }
+
         public override bool Equals(object? obj)
         {
-            return Id == (obj as UserModel)?.Id;
+            return Id == (obj as UserModel).Id;
         }
     }
 }

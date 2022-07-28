@@ -22,3 +22,6 @@ D:\Projects\User-Chat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.dll
 D:\Projects\User-Chat\NetModelsLibrary\obj\Debug\net6.0\refint\NetModelsLibrary.dll
 D:\Projects\User-Chat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.pdb
 D:\Projects\User-Chat\NetModelsLibrary\obj\Debug\net6.0\ref\NetModelsLibrary.dll
+D:\Projects\User-Chat\NetModelsLibrary\bin\Debug\net6.0\ServerDatabase.dll
+D:\Projects\User-Chat\NetModelsLibrary\bin\Debug\net6.0\ServerDatabase.pdb
+D:\Projects\User-Chat\NetModelsLibrary\obj\Debug\net6.0\NetModelsLibrary.csproj.CopyComplete

@@ -39,7 +39,6 @@ namespace UserApp.Controllers
             }
             catch (Exception)
             {
-                throw;
             }
         }
         public override T ReadObject<T>()

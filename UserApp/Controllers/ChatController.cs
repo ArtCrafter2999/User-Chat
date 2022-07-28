@@ -32,6 +32,13 @@ namespace UserApp.Controllers
             {
                 UpdateController.Start();
             };
+            ChatChanged += () =>
+            {
+                foreach (var model in ChatModels)
+                {
+                    model?.ChatView?.OnPropertyChanged("Color");
+                }
+            };
         }
 
         public void LoadChats()
@@ -69,6 +76,7 @@ namespace UserApp.Controllers
                         <NetModelsLibrary.Models.MessageModel>()
                 )
             );
+            if (SelectedChatModel?.ChatView != null) SelectedChatModel.ChatView.Unreaded = 0;
         }
     }
 }

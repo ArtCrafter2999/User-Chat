@@ -15,7 +15,7 @@ namespace Server
         public RequestType? RequestType { get; set; }
         public OperationFailureExeption(RequestType type, string message) : base(message) { RequestType = type; }
         public OperationFailureExeption(string message) : base(message) { }
-        public OperationFailureExeption() : base("не вдалося виконати цю операцію") {}
+        public OperationFailureExeption() : base("не вдалося виконати цю операцію") { }
     }
     public class DataBaseHandler
     {
@@ -49,6 +49,7 @@ namespace Server
         {
             UsersOnline.Add(User.Id);
             NetworkOfId.Add(User.Id, network);
+            Notifyer.UserChangeStatus();
         }
         public void UserOffline()
         {
@@ -59,6 +60,28 @@ namespace Server
                 User.LastOnline = DateTime.Now;
                 db.SaveChanges();
             }
+            Notifyer.UserChangeStatus();
+        }
+        public List<User> GetRelativeUsers()
+        {
+            List<User> res = new List<User>();
+            using (var db = new ServerDbContext())
+            {
+                var chats = from Chat c in db.Chats.Include(c => c.Users)
+                            where c.Users.Contains(User)
+                            select c;
+                foreach (var chat in chats)
+                {
+                    foreach (var user in chat.Users)
+                    {
+                        if (user.Id != User.Id && !res.Contains(user))
+                        {
+                            res.Add(user);
+                        }
+                    }
+                }
+            }
+            return res;
         }
 
         public void Registration(UserCreationModel model)
@@ -69,7 +92,12 @@ namespace Server
                 var user = db.Users.Count() > 0 ? db.Users.Where((u) => u.Login == model.Login).FirstOrDefault() : null;
                 if (user == null)
                 {
-                    var newuser = new User() { Login = model.Login, PasswordMD5 = model.PasswordMD5, Name = model.Name };
+                    var newuser = new User() { 
+                        Login = model.Login,
+                        PasswordMD5 = model.PasswordMD5,
+                        Name = model.Name,
+                        SearchName = model.Name.ToLower() //милиця(костыль) для правильного пошуку користувача
+                    };
                     db.Users.Add(newuser);
                     db.SaveChanges();
                     _user = newuser;
@@ -114,7 +142,7 @@ namespace Server
                 using (var db = new ServerDbContext())
                 {
                     if (User.Id == -1) throw new OperationFailureExeption();
-                    var message = new Message() { Text = model.Text, UserId = User.Id, ChatId = model.ChatId, SendTime = model.SendTime};
+                    var message = new Message() { Text = model.Text, UserId = User.Id, ChatId = model.ChatId, SendTime = model.SendTime };
                     db.Messages.Add(message);
                     db.SaveChanges();
 
@@ -150,10 +178,10 @@ namespace Server
             using (var db = new ServerDbContext())
             {
                 var rel = (from UserChatRelative ucr in (from Chat c in db.Chats.Include(c => c.UserChatRelatives)
-                                                        where c.Id == chatId
-                                                        select c).First().UserChatRelatives
-                          where ucr.UserId == userId
-                          select ucr).First();
+                                                         where c.Id == chatId
+                                                         select c).First().UserChatRelatives
+                           where ucr.UserId == userId
+                           select ucr).First();
                 rel.Unreaded++;
                 db.SaveChanges();
             }
@@ -186,14 +214,7 @@ namespace Server
                     {
                         foreach (var user in chat.Users)
                         {
-                            userStatusModels.Add(new UserStatusModel()
-                            {
-                                Id = user.Id,
-                                Name = user.Name,
-                                Login = user.Login,
-                                IsOnline = IsUserOnline(user),
-                                LastOnline = user.LastOnline
-                            });
+                            userStatusModels.Add(new UserStatusModel(user, IsUserOnline(user)));
                         }
                     }
 
@@ -205,21 +226,7 @@ namespace Server
                         {
                             User user = db.Users.Find(message.UserId);
                             if (user != null)
-                            messageModel = new MessageModel() // повідомлення, частина якого буде відображатися під чатом, як останне
-                            {
-                                Id = message.Id,
-                                ChatId = chat.Id,
-                                User = new UserStatusModel()
-                                {
-                                    Id = user.Id,
-                                    IsOnline = IsUserOnline(user),
-                                    LastOnline = user.LastOnline,
-                                    Login = user.Login,
-                                    Name = user.Name
-                                },
-                                SendTime = message.SendTime,
-                                Text = message.Text ?? "Відправлено Файл"
-                            };
+                                messageModel = new MessageModel(message, IsUserOnline(user)); // повідомлення, частина якого буде відображатися під чатом, як останне
                         }
                     }
                     catch (Exception) { }
@@ -228,11 +235,13 @@ namespace Server
                     {
                         Id = chat.Id,
                         Title = chat.Title ?? GenerateChatName(chat),
+                        IsTrueTitle = chat.Title != null,
                         Users = userStatusModels,
                         LastMessage = messageModel,
                         CreationDate = chat.CreationDate,
+                        DateOfChange = chat.DateOfChange,
                         Unreaded = chat.UserChatRelatives.Find(ucr => ucr.User.Id == User.Id).Unreaded
-                    });
+                    }); ;
                 }
                 network.WriteObject(res);
                 Console.WriteLine($"Returned {res.Chats.Count} chats with {res.User.Login}({res.User.Id})");
@@ -263,19 +272,20 @@ namespace Server
             }
             return string.Join(", ", names);
         }
-        public bool IsUserOnline(User user)
+        public static bool IsUserOnline(User user)
         {
             return UsersOnline.Contains(user.Id);
         }
 
         public void CreateChat(ChatCreationModel model)
         {
-            Console.WriteLine($"{User.Login}({User.Id}) Request for ChatCreation");
+            Console.WriteLine($"{User.Login}({User.Id}) Request for create chat");
             using (var db = new ServerDbContext())
             {
                 var chat = new Chat();
                 chat.Title = model.Title;
                 chat.CreationDate = DateTime.Now;
+                chat.DateOfChange = null;
                 chat.Messages = new List<Message>();
                 chat.Users = new List<User>();
 
@@ -290,14 +300,7 @@ namespace Server
                     if (user != null)
                     {
                         chat.Users.Add(user);
-                        userStatusModels.Add(new UserStatusModel()
-                        {
-                            Id = user.Id,
-                            Name = user.Name,
-                            Login = user.Login,
-                            IsOnline = IsUserOnline(user),
-                            LastOnline = user.LastOnline
-                        });
+                        userStatusModels.Add(new UserStatusModel(user, IsUserOnline(user)));
                         db.UserChatRelatives.Add(new UserChatRelative()
                         {
                             User = user,
@@ -313,6 +316,7 @@ namespace Server
                     Id = chat.Id,
                     CreationDate = chat.CreationDate,
                     Title = chat.Title ?? GenerateChatName(chat),
+                    IsTrueTitle = chat.Title != null,
                     Users = userStatusModels,
                     Unreaded = 0,
                     LastMessage = null
@@ -360,7 +364,7 @@ namespace Server
                                    select u;
                 allusers.AddRange(SimilarLogin);
                 var SimilarUsername = from User u in db.Users
-                                      where u.Name.ToLower().Contains(model.SearchString.ToLower()) && !allusers.Contains(u)
+                                      where u.SearchName.Contains(model.SearchString.ToLower()) && !allusers.Contains(u)
                                       select u;
                 allusers.AddRange(SimilarUsername);
 
@@ -370,21 +374,14 @@ namespace Server
                 var res = new AllUsersModel();
                 foreach (var user in allusers)
                 {
-                    res.Users.Add(new UserStatusModel()
-                    {
-                        Id = user.Id,
-                        Login = user.Login,
-                        Name = user.Name,
-                        IsOnline = IsUserOnline(user),
-                        LastOnline = user.LastOnline,
-                    });
+                    res.Users.Add(new UserStatusModel(user, IsUserOnline(user)));
                 }
                 network.WriteObject(res);
                 Console.WriteLine($"For {User.Login}({User.Id})'s search request '{model.SearchString}' Founded {allusers.Count} users");
             }
         }
 
-        public const int PageSize = 20; 
+        public const int PageSize = 20;
         public void GetPageOfMessages(GetMessagesInfoModel model)
         {
             Console.WriteLine($"{User.Login}({User.Id}) Request to get messages in range {model.From}-{model.From + PageSize} from chat ({model.ChatId})");
@@ -406,21 +403,7 @@ namespace Server
                 page.To = model.From + count;
                 foreach (var message in messages)
                 {
-                    page.Messages.Add(new MessageModel()
-                    {
-                        ChatId = model.ChatId,
-                        Id = message.Id,
-                        SendTime = message.SendTime,
-                        Text = message.Text,
-                        User = new UserStatusModel
-                        {
-                            Id = message.UserId,
-                            IsOnline = IsUserOnline(message.User),
-                            LastOnline = message.User.LastOnline,
-                            Login = message.User.Login,
-                            Name = message.User.Name
-                        }
-                    });
+                    page.Messages.Add(new MessageModel(message, IsUserOnline(message.User)));
                 }
                 network.WriteObject(page);
                 Console.WriteLine($"{User.Login}({User.Id}) received {page.Messages.Count} messages");
@@ -431,11 +414,11 @@ namespace Server
         {
             using (var db = new ServerDbContext())
             {
-                var rel = (from UserChatRelative ucr in (from Chat c in db.Chats.Include(c => c.UserChatRelatives)
-                                                         where c.Id == idModel.Id
-                                                         select c).First().UserChatRelatives
-                           where ucr.UserId == User.Id
-                           select ucr).First();
+                var rel = db.Chats
+                    .Include(c => c.UserChatRelatives)
+                    .First(c => c.Id == idModel.Id).UserChatRelatives
+                    .First(ucr => ucr.UserId == User.Id);
+                Console.WriteLine($"{User.Login}({User.Id}) Request for get unreaded messages in the amount of {rel.Unreaded} from chat ({idModel.Id})");
                 var page = new MessagesPageModel()
                 {
                     From = 0,
@@ -452,21 +435,7 @@ namespace Server
                 page.To = count;
                 foreach (var message in messages)
                 {
-                    page.Messages.Add(new MessageModel()
-                    {
-                        ChatId = idModel.Id,
-                        Id = message.Id,
-                        SendTime = message.SendTime,
-                        Text = message.Text,
-                        User = new UserStatusModel
-                        {
-                            Id = message.UserId,
-                            IsOnline = IsUserOnline(message.User),
-                            LastOnline = message.User.LastOnline,
-                            Login = message.User.Login,
-                            Name = message.User.Name
-                        }
-                    });
+                    page.Messages.Add(new MessageModel(message, IsUserOnline(message.User)));
                 }
                 rel.Unreaded = 0;
                 db.SaveChanges();
@@ -477,13 +446,133 @@ namespace Server
         {
             using (var db = new ServerDbContext())
             {
-                var rel = (from UserChatRelative ucr in (from Chat c in db.Chats.Include(c => c.UserChatRelatives)
-                                                         where c.Id == idModel.Id
-                                                         select c).First().UserChatRelatives
-                           where ucr.UserId == User.Id
-                           select ucr).First();
+                var rel = db.Chats
+                    .Include(c => c.UserChatRelatives)
+                    .First(c => c.Id == idModel.Id).UserChatRelatives
+                    .First(ucr => ucr.UserId == User.Id);
+                if (rel.Unreaded > 1) Console.WriteLine($"{User.Login}({User.Id}) mark readed messages in the amount of {rel.Unreaded} from chat ({idModel.Id})");
                 rel.Unreaded = 0;
                 db.SaveChanges();
+            }
+        }
+
+        public void ChangeChat(ChatChangeModel model)
+        {
+            Console.WriteLine($"{User.Login}({User.Id}) Request for change chat ({model.Id})");
+            using (var db = new ServerDbContext())
+            {
+                var chat = db.Chats
+                    .Include(c => c.Users)
+                    .Include(c => c.Messages)
+                    .Include(c => c.UserChatRelatives)
+                    .First(c => c.Id == model.Id);
+                if (chat != null)
+                {
+                    chat.Title = model.Title;
+                    chat.DateOfChange = DateTime.Now;
+                    var addedUsers = new List<User>();
+                    var removedUsers = new List<User>();
+                    var notChangedUsers = new List<User>();
+
+                    model.Users.Add(new IdModel(User.Id));
+
+                    var userStatusModels = new List<UserStatusModel>();
+                    foreach (var user in chat.Users)
+                    {
+                        if (model.Users.Find(u => u.Id == user.Id) != null)
+                        {
+                            notChangedUsers.Add(user);
+                            userStatusModels.Add(new UserStatusModel(user, IsUserOnline(user)));
+                        }
+                        else
+                        {
+                            removedUsers.Add(user);
+                        }
+                    }
+                    foreach (var user in removedUsers)
+                    {
+                        chat.Users.Remove(user);
+                        var ucr = db.UserChatRelatives.Find(user.Id, chat.Id);
+                        if (ucr != null) db.UserChatRelatives.Remove(ucr);
+                    }
+                    foreach (var UserIdModel in model.Users)
+                    {
+                        var user = db.Users.Find(UserIdModel.Id);
+                        if (user != null && !chat.Users.Contains(user))
+                        {
+                            addedUsers.Add(user);
+                            chat.Users.Add(user);
+                            userStatusModels.Add(new UserStatusModel(user, IsUserOnline(user)));
+                            db.UserChatRelatives.Add(new UserChatRelative()
+                            {
+                                User = user,
+                                Chat = chat,
+                                Unreaded = 0
+                            });
+                        }
+                    }
+                    MessageModel? messageModel = null;
+                    try
+                    {
+                        var message = chat.Messages.OrderByDescending(c => c.SendTime).FirstOrDefault();
+                        if (message != null)
+                        {
+                            User? user = db.Users.Find(message.UserId);
+                            if (user != null)
+                                messageModel = new MessageModel(message, IsUserOnline(user)); // повідомлення, частина якого буде відображатися під чатом, як останне
+                        }
+                    }
+                    catch (Exception) { }
+                    db.SaveChanges();
+
+                    Notifyer.ChatChanged(new ChatModel()
+                    {
+                        Id = chat.Id,
+                        CreationDate = chat.CreationDate,
+                        DateOfChange = chat.DateOfChange,
+                        Title = chat.Title ?? GenerateChatName(chat),
+                        IsTrueTitle = chat.Title != null,
+                        Users = userStatusModels,
+                        Unreaded = 0,
+                        LastMessage = messageModel
+                    }, addedUsers, removedUsers, notChangedUsers);
+                }
+            }
+        }
+        public void DeleteChat(IdModel idModel)
+        {
+            Console.WriteLine($"{User.Login}({User.Id}) Request for delete chat ({idModel.Id})");
+            using (var db = new ServerDbContext())
+            {
+                var chat = db.Chats
+                    .Include(c => c.Users)
+                    .Include(c => c.UserChatRelatives)
+                    .Include(c => c.Messages)
+                    .First(c => c.Id == idModel.Id);
+                if (chat != null)
+                {
+                    var users = new List<User>(chat.Users);
+                    var relatives = new List<UserChatRelative>(chat.UserChatRelatives);
+                    var messages = new List<Message>(chat.Messages);
+                    chat.Users.Clear();
+                    chat.UserChatRelatives.Clear();
+                    chat.Messages.Clear();
+                    foreach (var ucr in relatives)
+                    {
+                        db.UserChatRelatives.Remove(ucr);
+                    }
+                    foreach (var user in users)
+                    {
+                        user.Chats.Remove(user.Chats.Find(c => c.Id == chat.Id));
+                    }
+                    foreach (var msg in messages)
+                    {
+                        db.Messages.Remove(msg);
+                    }
+                    db.Chats.Remove(chat);
+                    db.SaveChanges();
+                    Notifyer.ChatDeleted(idModel, users);
+                }
             }
         }
     }

@@ -13,6 +13,9 @@ namespace NetModelsLibrary.Models
         public List<UserStatusModel> Users { get; set; }
         public MessageModel? LastMessage { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime? DateOfChange { get; set; }
         public int Unreaded { get; set; }
+        public bool IsTrueTitle { get; set; }
+        public ChatModel(){}
     }
 }

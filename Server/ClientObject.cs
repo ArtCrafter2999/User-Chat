@@ -84,6 +84,12 @@ namespace Server
                                 case RequestType.MarkReaded:
                                     handler.MarkReaded(network.ReadObject<IdModel>());
                                     break;
+                                case RequestType.ChangeChat:
+                                    handler.ChangeChat(network.ReadObject<ChatChangeModel>());
+                                    break;
+                                case RequestType.DeleteChat:
+                                    handler.DeleteChat(network.ReadObject<IdModel>());
+                                    break;
                                 default:
                                     break;
                             }

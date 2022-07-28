@@ -8,11 +8,12 @@ using UserApp.Views;
 
 namespace UserApp.Models
 {
-    public class ChatModel
+    public class ChatModel : INotifyProperyChangedBase
     {
         private NetModelsLibrary.Models.ChatModel _chat;
         public int Id => _chat.Id;
         public string Title => _chat.Title;
+        public bool IsTrueTitle => _chat.IsTrueTitle;
         public int UnreadedMessageCount { get => _chat.Unreaded; set { _chat.Unreaded = value; } }
         public List<MessageModel> Messages { get; set; } = new List<MessageModel>();
         public int Loaded = 0;
@@ -29,26 +30,36 @@ namespace UserApp.Models
                 return users;
             }
         }
-        public DateTime LastTime => _lastMessage != null ? _lastMessage.SendTime : _chat.CreationDate;
-        public MessageModel? LastMessage {
+        public DateTime LastTime
+        {
             get
             {
-                return _chat.LastMessage != null ? _lastMessage : null;
+                if (LastMessage != null && _chat.DateOfChange != null) return LastMessage.SendTime < _chat.DateOfChange.Value ? LastMessage.SendTime : _chat.DateOfChange.Value;
+                if (_chat.DateOfChange != null) return _chat.DateOfChange.Value;
+                if (LastMessage != null) return LastMessage.SendTime;
+                return _chat.CreationDate;
+            }
+        }
+        public MessageModel? LastMessage
+        { 
+            get
+            {
+                if (Messages != null && Messages.Count > 0) return Messages.Last();
+                return _chat.LastMessage != null ? new MessageModel(_chat.LastMessage) : null;
             }
             set
             {
-                _lastMessage = value;
+                if (value != null)
+                {
+                    if (Messages != null && Messages.Count > 0) Messages.Add(value);
+                    else _chat.LastMessage = value._message;
+                    OnPropertyChanged(nameof(LastMessage));
+                }
             }
         }
-        private MessageModel? _lastMessage;
         public ChatModel(NetModelsLibrary.Models.ChatModel model)
         {
             _chat = model;
-            _lastMessage = _chat.LastMessage != null ? new MessageModel(_chat.LastMessage) : null;
-        }
-        public List<MessageModel> LoadMessages()
-        {
-            throw new NotImplementedException();
         }
         public ChatView? ChatView { get; set; }
     }

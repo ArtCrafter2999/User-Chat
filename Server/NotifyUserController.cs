@@ -43,12 +43,72 @@ namespace Server
         {
             foreach (var user in chat.Users)
             {
-                Handler.AddUnreaded(chat.Id, user.Id);
-                if (user.Id != Handler.User.Id && IsUserOnline(user.Id))
+                if (user.Id != Handler.User.Id)
                 {
-                    var userNetwork = DataBaseHandler.NetworkOfId[user.Id];
-                    userNetwork.WriteNotify(NotifyType.MessageSended);
-                    userNetwork.WriteObject(message);
+                    Handler.AddUnreaded(chat.Id, user.Id);
+                    if (IsUserOnline(user.Id))
+                    {
+                        var userNetwork = DataBaseHandler.NetworkOfId[user.Id];
+                        userNetwork.WriteNotify(NotifyType.MessageSended);
+                        userNetwork.WriteObject(message);
+                    }
+                }
+            }
+        }
+
+        public void UserChangeStatus()
+        {
+            var rel = Handler.GetRelativeUsers();
+            foreach (var user in rel)
+            {
+                if (IsUserOnline(user.Id))
+                {
+                    var net = DataBaseHandler.NetworkOfId[user.Id];
+                    net.WriteNotify(NotifyType.UserChangeStatus);
+                    net.WriteObject(new UserStatusModel(Handler.User, IsUserOnline(Handler.User.Id)));
+                }
+            }
+        }
+
+        public void ChatChanged(ChatModel model, List<User> added, List<User> removed, List<User> notChanged)
+        {
+            foreach (var user in added)
+            {
+                if (IsUserOnline(user.Id))
+                {
+                    var net = DataBaseHandler.NetworkOfId[user.Id];
+                    net.WriteNotify(NotifyType.ChatCreated);
+                    net.WriteObject(model);
+                }
+            }
+            foreach (var user in removed)
+            {
+                if (IsUserOnline(user.Id))
+                {
+                    var net = DataBaseHandler.NetworkOfId[user.Id];
+                    net.WriteNotify(NotifyType.ChatDeleted);
+                    net.WriteObject(new IdModel(model.Id));
+                }
+            }
+            foreach (var user in notChanged)
+            {
+                if (IsUserOnline(user.Id))
+                {
+                    var net = DataBaseHandler.NetworkOfId[user.Id];
+                    net.WriteNotify(NotifyType.ChatChanged);
+                    net.WriteObject(model);
+                }
+            }
+        }
+        public void ChatDeleted(IdModel id, List<User> users)
+        {
+            foreach (var user in users)
+            {
+                if (IsUserOnline(user.Id))
+                {
+                    var net = DataBaseHandler.NetworkOfId[user.Id];
+                    net.WriteNotify(NotifyType.ChatDeleted);
+                    net.WriteObject(id);
                 }
             }
         }

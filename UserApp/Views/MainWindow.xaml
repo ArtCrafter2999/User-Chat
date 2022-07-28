@@ -41,12 +41,22 @@
             </Grid>
         </Button>
         <!--#endregion-->
-        <!--#region Назва чату-->
+        <!--#region Верхня полоска чату-->
         <Canvas Grid.Column="1" Background="SteelBlue"/>
         <TextBlock Text="{Binding Path=ChatController.SelectedChatModel.Title, Mode=OneWay}" Grid.Column="1" Foreground="White" Margin="10,0,10,0" FontWeight="Bold" FontSize="20"/>
+        <Button Command="{Binding ChangeChat}" Grid.Column="1" Grid.Row="0" Height="40" Width="40" Background="#3f75a2" HorizontalAlignment="Right" Margin="0,0,30,0">
+            <Canvas Width="37" Height="37">
+                <Line Stroke="White" StrokeThickness="4" 
+                      Y1="9.25" X1="5" Y2="9.25" X2="32"/>
+                <Line Stroke="White" StrokeThickness="4" 
+                      Y1="18.5" X1="5" Y2="18.5" X2="32"/>
+                <Line Stroke="White" StrokeThickness="4" 
+                      Y1="27.75" X1="5" Y2="27.75" X2="32"/>
+            </Canvas>
+        </Button>
         <!--#endregion-->
         <!--#region Простір чату-->
-        <ScrollViewer Name="MessageScroll" DataContext="{Binding Path=ChatView}" HorizontalScrollBarVisibility="Disabled" Grid.Column="1" Grid.Row="1">
+        <ScrollViewer Name="MessageScroll" DataContext="{Binding Path=ChatView}"  HorizontalScrollBarVisibility="Disabled" Grid.Column="1" Grid.Row="1">
             <StackPanel Name="MessagesStack" Orientation="Vertical"/>
         </ScrollViewer>
         
@@ -55,7 +65,7 @@
         <!--#endregion-->
         <!--#region Grid поверхи додатка-->
         <!--{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}-->
-        <Grid d:IsHidden="True" DataContext="{Binding Path=OverlayGrid}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}" Grid.ColumnSpan="2" Grid.RowSpan="3"
+        <Grid d:IsHidden="False" DataContext="{Binding Path=OverlayGrid}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}" Grid.ColumnSpan="2" Grid.RowSpan="3"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
             <!--#region Визначення колонок-->
             <Grid.ColumnDefinitions>
@@ -71,7 +81,7 @@
             <!--#endregion-->
             <Canvas Grid.ColumnSpan="4" Grid.RowSpan="3" Background="Black" Opacity="0.6"/>
             <!--#region Додавання чату-->
-            <Grid DataContext="{Binding Path=ChatCreationView}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}"
+            <Grid d:IsHidden="False" DataContext="{Binding Path=ChatCreationView}" Visibility="{Binding Path=Visibility, Converter={StaticResource VisibilityConverter}}"
                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -81,7 +91,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <!--#region Центральна колонка-->
-                <GroupBox  Grid.Column="2"
+                <GroupBox Name="CenterGroupBox" Grid.Column="2"
                       Foreground="White" FontSize="16" Header="Створення нового чату" Background="SteelBlue">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -96,10 +106,20 @@
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
                             <StackPanel Name="AddUsersInChat" Orientation="Vertical"/>
                         </ScrollViewer>
-                        <Button Command="{Binding Create}" Foreground="SteelBlue" Background="White"
-                            Content="Створити" Grid.Row="1" Margin="162,189,0,0" Grid.RowSpan="2"/>
-                        <Button Command="{Binding Cancel}" Foreground="SteelBlue" Background="White"
-                            Content="Скасувати" Grid.Row="1" Margin="0,188,162,0" Grid.RowSpan="2"/>
+                        <Grid d:IsHidden="True" Name="CreationButtons" Grid.Row="2">
+                            <Button Command="{Binding Create}" Foreground="SteelBlue" Background="White"
+                            Content="Створити" Width="100" HorizontalAlignment="Right"  Margin="5, 0, 5, 0"/>
+                            <Button Command="{Binding Cancel}" Foreground="SteelBlue" Background="White"
+                            Content="Скасувати" Width="100" HorizontalAlignment="Left"  Margin="5, 0, 5, 0"/>
+                        </Grid>
+                        <Grid d:IsHidden="False" Name="ChangeButtons" Grid.Row="2">
+                            <Button Command="{Binding Change}" Foreground="SteelBlue" Background="White"
+                            Content="Змінити" Width="70" HorizontalAlignment="Right"  Margin="5, 0, 5, 0"/>
+                            <Button Command="{Binding Delete}" Foreground="Red" Background="White"
+                            Content="Видалити" Width="80" HorizontalAlignment="Left" Margin="5, 0, 5, 0"/>
+                            <Button Command="{Binding Cancel}" Foreground="SteelBlue" Background="White"
+                            Content="Скасувати" Width="85" HorizontalAlignment="Center" Margin="17, 0, 5, 0"/>
+                        </Grid>
                     </Grid>
                 </GroupBox>
                 <!--#endregion-->
@@ -137,11 +157,11 @@
                     <Grid>
                         <StackPanel>
                             <Label Content="Логін" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
+                            <TextBox Name="AuthLogin" KeyDown="EnterMoveNextFocus" Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                             <Label Content="Пароль" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <PasswordBox Name="PasswordA" Margin="10,0,10,0"/>
+                            <PasswordBox Name="AuthPassword" KeyDown="EnterMoveNextFocus" Margin="10,0,10,0"/>
                         </StackPanel>
-                        <Button Command="{Binding Authorize}" CommandParameter="{Binding ElementName=PasswordA}"
+                        <Button Name="AuthBtn" Command="{Binding Authorize}" CommandParameter="{Binding ElementName=AuthPassword}"
                                 FontSize="16" Margin="0,0,10,10" Content="Авторизуватися" Foreground="SteelBlue" Background="White" Width="130" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom"/>
                     </Grid>
                 </TabItem>
@@ -149,13 +169,13 @@
                     <Grid>
                         <StackPanel>
                             <Label Content="Логін" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
+                            <TextBox Name="RegLogin" KeyDown="EnterMoveNextFocus" Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                             <Label Content="Пароль" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <PasswordBox Name="PasswordR" Margin="10,0,10,0"/>
+                            <PasswordBox Name="RegPassword" KeyDown="EnterMoveNextFocus" Margin="10,0,10,0"/>
                             <Label Content="Ім'я" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                            <TextBox Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
+                            <TextBox Name="RegName" KeyDown="EnterMoveNextFocus" Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
                         </StackPanel>
-                        <Button Command="{Binding Register}" CommandParameter="{Binding ElementName=PasswordR}"
+                        <Button Name="RegBtn" Command="{Binding Register}" CommandParameter="{Binding ElementName=RegPassword}"
                                 Margin="0,0,10,10" Content="Зарееструватися" FontSize="16" Foreground="SteelBlue" Background="White" Width="140" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom"/>
                     </Grid>
                 </TabItem>
@@ -167,9 +187,9 @@
                 <Grid>
                     <StackPanel>
                         <Label Content="ІP-адресса" FontSize="16" Foreground="White" Margin="10,0,10,0"/>
-                        <TextBox Name="IpAddress" Margin="10,0,10,0"/>
+                        <TextBox Name="IpAddress" KeyDown="EnterMoveNextFocus" Margin="10,0,10,0"/>
                     </StackPanel>
-                    <Button Command="{Binding Connect}" CommandParameter="{Binding ElementName=IpAddress}"
+                    <Button Name="ConBtn" Command="{Binding Connect}" CommandParameter="{Binding ElementName=IpAddress}"
                             Margin="0,0,10,10" Content="Підключити" FontSize="16" Foreground="SteelBlue" Background="White"
                             Width="100" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom"/>
                 </Grid>
