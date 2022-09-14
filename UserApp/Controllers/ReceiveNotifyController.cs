@@ -18,24 +18,25 @@ namespace UserApp.Controllers
         public MainWindow MainWindow => MainWindow.instance;
         public ChatController ChatController => MainWindow.ChatController;
 
-        TaskCompletionSource<string>? tcs;
+        CancellationTokenSource cts;
 
         public void Stop()
         {
-            if (tcs != null)
-                tcs.SetException(new Exception());
+            cts.Cancel();
         }
         public void Start()
         {
-            tcs = new TaskCompletionSource<string>();
-            Task.Factory.StartNew(Process);
+            cts = new CancellationTokenSource();
+            var token = cts.Token;
+            Task.Factory.StartNew(() => Process(token), token);
         }
-        public void Process()
+        public async Task Process(CancellationToken token)
         {
             try
             {
                 if (Connection.Stream != null)
                 {
+                    Connection.Network.Token = token;
                     while (true)
                     {
                         var Info = Connection.Network.ReadObject<NotifyInfoModel>();
@@ -62,7 +63,7 @@ namespace UserApp.Controllers
                     }
                 }
             }
-            catch (Exception)
+            catch (OperationCanceledException)
             {
             }
         }
@@ -113,7 +114,8 @@ namespace UserApp.Controllers
         {
             MainWindow.Dispatcher.Invoke(() =>
             {
-                if (MainWindow.ChatView.IsSelected && model.ChatId == ChatController.SelectedChatModel.Id)
+                if (MainWindow.ChatView.IsSelected &&
+                    model.ChatId == ChatController.SelectedChatModel.Id)
                 {
                     Connection.Network.WriteRequest(RequestType.MarkReaded);
                     Connection.Network.WriteObject(new IdModel(model.ChatId));

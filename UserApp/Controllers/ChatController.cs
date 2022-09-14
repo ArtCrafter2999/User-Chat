@@ -70,12 +70,12 @@ namespace UserApp.Controllers
         {
             Connection.Network.WriteRequest(NetModelsLibrary.RequestType.SendMessage);
             Connection.Network.WriteObject(message);
-            MessageSended.Invoke(
-                new MessageModel(
-                    Connection.Network.ReadObject
-                        <NetModelsLibrary.Models.MessageModel>()
-                )
-            );
+            //MessageSended.Invoke(
+            //    new MessageModel(
+            //        Connection.Network.ReadObject
+            //            <NetModelsLibrary.Models.MessageModel>()
+            //    )
+            //);
             if (SelectedChatModel?.ChatView != null) SelectedChatModel.ChatView.Unreaded = 0;
         }
     }

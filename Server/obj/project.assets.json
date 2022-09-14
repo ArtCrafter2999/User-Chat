@@ -452,6 +452,20 @@
           "bin/placeholder/NetModelsLibrary.dll": {}
         }
       },
+      "ServerClasses/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "NetModelsLibrary": "1.0.0",
+          "ServerDatabase": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ServerClasses.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ServerClasses.dll": {}
+        }
+      },
       "ServerDatabase/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -1100,6 +1114,11 @@
       "path": "../NetModelsLibrary/NetModelsLibrary.csproj",
       "msbuildProject": "../NetModelsLibrary/NetModelsLibrary.csproj"
     },
+    "ServerClasses/1.0.0": {
+      "type": "project",
+      "path": "../ServerClasses/ServerClasses.csproj",
+      "msbuildProject": "../ServerClasses/ServerClasses.csproj"
+    },
     "ServerDatabase/1.0.0": {
       "type": "project",
       "path": "../ServerDatabase/ServerDatabase.csproj",
@@ -1109,6 +1128,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "NetModelsLibrary >= 1.0.0",
+      "ServerClasses >= 1.0.0",
       "ServerDatabase >= 1.0.0"
     ]
   },
@@ -1142,6 +1162,9 @@
             "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
               "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj"
             },
+            "D:\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj": {
+              "projectPath": "D:\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj"
+            },
             "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
               "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
             }
@@ -1172,7 +1195,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }

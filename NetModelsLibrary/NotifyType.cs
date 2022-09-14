@@ -34,6 +34,6 @@ namespace NetModelsLibrary
         /// Notify sender too
         /// Send the IdModel of deleted chat
         /// </summary>
-        ChatDeleted
+        ChatDeleted,
     }
 }

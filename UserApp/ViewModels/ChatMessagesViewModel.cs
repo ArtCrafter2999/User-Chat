@@ -23,7 +23,7 @@ namespace UserApp.ViewModels
         public ChatMessagesViewModel()
         {
             Controller.ChatChanged += ChatChanged;
-            Controller.MessageSended += MessageDown;
+            //Controller.MessageSended += MessageDown;
             MainWindow.MessageScroll.ScrollChanged += CheckTop;
         }
 

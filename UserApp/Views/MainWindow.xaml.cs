@@ -68,14 +68,14 @@ namespace UserApp.Views
             ChatView = new ChatMessagesViewModel();
 
 
-            ChatController.MessageSended += m =>
-            {
-                if (m.Chat != null)
-                {
-                    m.Chat.LastMessage = m;
-                    SortChats();
-                }
-            };
+            //ChatController.MessageSended += m =>
+            //{
+            //    if (m.Chat != null)
+            //    {
+            //        m.Chat.LastMessage = m;
+            //        SortChats();
+            //    }
+            //};
 
             OverlayGrid.AuthView.Success += _ => UpdateChatView();
 

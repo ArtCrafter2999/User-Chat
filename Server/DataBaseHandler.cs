@@ -163,7 +163,7 @@ namespace Server
                     }
                     db.SaveChanges();
                     model.Id = message.Id;
-                    network.WriteObject(model);
+                    //network.WriteObject(model);
                     var chat = db.Chats.Include(c => c.Users).Where(c => c.Id == model.ChatId).First();
                     Notifyer.MessageSended(model, chat);
                 }
@@ -173,7 +173,7 @@ namespace Server
                 throw new OperationFailureExeption("Unable to send message from unregistered user");
             }
         }
-        public void AddUnreaded(int chatId, int userId)
+        public static void AddUnreaded(int chatId, int userId)
         {
             using (var db = new ServerDbContext())
             {
@@ -283,7 +283,7 @@ namespace Server
             using (var db = new ServerDbContext())
             {
                 var chat = new Chat();
-                chat.Title = model.Title;
+                chat.Title = model.Title == "" ? null : model.Title;
                 chat.CreationDate = DateTime.Now;
                 chat.DateOfChange = null;
                 chat.Messages = new List<Message>();
@@ -380,7 +380,6 @@ namespace Server
                 Console.WriteLine($"For {User.Login}({User.Id})'s search request '{model.SearchString}' Founded {allusers.Count} users");
             }
         }
-
         public const int PageSize = 20;
         public void GetPageOfMessages(GetMessagesInfoModel model)
         {

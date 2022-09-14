@@ -12,6 +12,8 @@ using System.Net;
 using NetModelsLibrary.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using NetModelsLibrary;
+using System.Threading;
 
 namespace UserApp.ViewModels
 {
@@ -29,7 +31,10 @@ namespace UserApp.ViewModels
                 Connection.Client = new TcpClient();
                 Connection.Client.Connect(ip, Connection.Port);
                 Connection.Stream = Connection.Client.GetStream();
-                Connection.Network = new Network(Connection.Stream);
+                Connection.NetworkCancelation = new CancellationTokenSource();
+                Connection.Network = new StackNetwork(
+                    Connection.Stream,
+                    Connection.NetworkCancelation.Token);
                 Connection.IsConnected = true;
                 Invoke(new ResoultModel(true, "Підключення до серверу встановлено"));
             }

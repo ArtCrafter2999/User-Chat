@@ -9,6 +9,7 @@
       "Server/1.0.0": {
         "dependencies": {
           "NetModelsLibrary": "1.0.0",
+          "ServerClasses": "1.0.0",
           "ServerDatabase": "1.0.0"
         },
         "runtime": {
@@ -347,6 +348,15 @@
           "NetModelsLibrary.dll": {}
         }
       },
+      "ServerClasses/1.0.0": {
+        "dependencies": {
+          "NetModelsLibrary": "1.0.0",
+          "ServerDatabase": "1.0.0"
+        },
+        "runtime": {
+          "ServerClasses.dll": {}
+        }
+      },
       "ServerDatabase/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Sqlite": "6.0.7"
@@ -560,6 +570,11 @@
       "hashPath": "system.text.json.6.0.0.nupkg.sha512"
     },
     "NetModelsLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ServerClasses/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

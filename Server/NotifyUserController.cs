@@ -22,9 +22,9 @@ namespace Server
 
         public void ChatCreated(ChatModel model)
         {
+            string? origTitle = model.Title;
             foreach (var user in model.Users)
             {
-                string? origTitle = model.Title;
                 if (user.Id != Handler.User.Id && IsUserOnline(user.Id))
                 {
                     var userNetwork = DataBaseHandler.NetworkOfId[user.Id];
@@ -45,13 +45,18 @@ namespace Server
             {
                 if (user.Id != Handler.User.Id)
                 {
-                    Handler.AddUnreaded(chat.Id, user.Id);
+                    DataBaseHandler.AddUnreaded(chat.Id, user.Id);
                     if (IsUserOnline(user.Id))
                     {
                         var userNetwork = DataBaseHandler.NetworkOfId[user.Id];
                         userNetwork.WriteNotify(NotifyType.MessageSended);
                         userNetwork.WriteObject(message);
                     }
+                }
+                else
+                {
+                    Handler.network.WriteNotify(NotifyType.MessageSended);
+                    Handler.network.WriteObject(message);
                 }
             }
         }

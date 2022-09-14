@@ -9,23 +9,34 @@ using NetModelsLibrary.Models;
 
 namespace NetModelsLibrary
 {
-    public class Network
+    public class Network : INetwork
     {
         protected NetworkStream _stream;
         public Network(NetworkStream stream)
         {
             _stream = stream;
         }
+        public Network(NetworkStream stream, CancellationToken token)
+        {
+            _stream = stream;
+            Token = token;
+        }
 
         public readonly Regex FileRegEx = new Regex(@"([^\\]+)\.([^\.]+$)");
+
+        public CancellationToken? Token { get; set; }
 
         protected string ReadRaw()
         {
             if (_stream != null)
             {
+                while (!_stream.DataAvailable)
+                {
+                    if (Token.HasValue && Token.Value.IsCancellationRequested) Token.Value.ThrowIfCancellationRequested();
+                }
                 return new BinaryReader(_stream).ReadString();
             }
-            throw new Exception();
+            throw new Exception("Stream == null");
         }
 
         public string ReadFile(string FullName, FileInfoModel Info)
@@ -97,7 +108,7 @@ namespace NetModelsLibrary
                 var TempStream = new MemoryStream(); //тимчасовий потік для збереження сереалізованих даниїх
                 var Serializer = new System.Xml.Serialization.XmlSerializer(typeof(T)); //серіалайзер
                 Serializer.Serialize(TempStream, obj);//серіалізовую в тимчасовий потік
-                TempStream.Position = 0; // повертаюсь до початку
+                TempStream.Position = 0;
                 new BinaryWriter(_stream).Write( //записую в мережевий потік той рядок
                     new StreamReader(TempStream, Encoding.UTF8).ReadToEnd() // який отримуєтсья з тимчасового потіка
                 );

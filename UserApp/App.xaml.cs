@@ -18,7 +18,7 @@ namespace UserApp
             if (Connection.IsConnected)
             {
                 Connection.Disconect();
-                UserApp.Views.MainWindow.instance.ChatController.UpdateController.Stop();
+                Views.MainWindow.instance.ChatController.UpdateController.Stop();
             }
         }
     }

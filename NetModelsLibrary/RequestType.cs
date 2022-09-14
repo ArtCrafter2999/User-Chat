@@ -16,7 +16,7 @@ namespace NetModelsLibrary
         Registration,
         /// <summary>
         /// Request for send message from the user selected chat
-        /// After this server expects MessageModel and returns the same message but with id
+        /// After this server expects MessageModel
         /// </summary>
         SendMessage,
         /// <summary>
@@ -33,7 +33,7 @@ namespace NetModelsLibrary
         /// <summary>
         /// Request to create chat
         /// After this server expects that sequence of requests:
-        /// Expects ChatCreateModel returns ResoultModel 
+        /// Expects ChatCreationModel returns ResoultModel 
         /// </summary>
         CreateChat,
         /// <summary>
