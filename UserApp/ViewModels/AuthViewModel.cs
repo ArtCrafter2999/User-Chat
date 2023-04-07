@@ -27,11 +27,11 @@ namespace UserApp.ViewModels
             {
                 Connection.Network.WriteRequest(RequestType.Auth);
                 Connection.Network.WriteObject(new AuthModel() { Login = Login, PasswordMD5 = CreateMD5(((PasswordBox)o).Password) });
-                Invoke(Connection.Network.ReadObject<ResoultModel>());
+                Invoke(Connection.Network.ReadObject<ResultModel>());
             }
             else
             {
-                Invoke(new ResoultModel(false, "Немає з'єднання з сервером"));
+                Invoke(new ResultModel(false, "Немає з'єднання з сервером"));
             }
         }, o => o != null && Login != null);
         public ICommand Register => new RelayCommand(o =>
@@ -41,12 +41,12 @@ namespace UserApp.ViewModels
                 Connection.Network.WriteRequest(RequestType.Registration);
                 Connection.Network.WriteObject(new UserCreationModel() { Name = Username, Login = Login, PasswordMD5 = CreateMD5(((PasswordBox)o).Password) });
 
-                ResoultModel? resoult = Connection.Network.ReadObject<ResoultModel>();
+                ResultModel? resoult = Connection.Network.ReadObject<ResultModel>();
                 Invoke(resoult);
             }
             else
             {
-                Invoke(new ResoultModel(false, "Немає з'єднання з сервером"));
+                Invoke(new ResultModel(false, "Немає з'єднання з сервером"));
             }
         }, o => o != null && Login != null && Username != null);
 

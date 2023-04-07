@@ -10,7 +10,7 @@ TcpClient client = new TcpClient();
 client.Connect(GetLocalIPAddress(), port);
 var network = new Network(client.GetStream());
 
-ResoultModel response;
+ResultModel response;
 string Login;
 do
 {
@@ -19,7 +19,7 @@ do
 
     network.WriteObject(new RequestInfoModel(RequestType.Registration));
     //network.WriteObject(new AuthModel() { Login = Login, PasswordMD5 = PasswordMD5 });
-    response = network.ReadObject<ResoultModel>();
+    response = network.ReadObject<ResultModel>();
     Console.WriteLine(response.Message);
 } while (response.Success == false);
 do
@@ -27,7 +27,7 @@ do
     string UserName = Read("UserName: ");
 
     //network.WriteObject(new UserDataModel() { Login = Login, Name = UserName });
-    response = network.ReadObject<ResoultModel>();
+    response = network.ReadObject<ResultModel>();
     Console.WriteLine(response.Message);
 } while (response.Success == false);
 

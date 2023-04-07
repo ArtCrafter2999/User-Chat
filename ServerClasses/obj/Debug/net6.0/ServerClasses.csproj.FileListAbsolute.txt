@@ -15,3 +15,20 @@ D:\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.dll
 D:\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\refint\ServerClasses.dll
 D:\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.pdb
 D:\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ref\ServerClasses.dll
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\bin\Debug\net6.0\ServerClasses.deps.json
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\bin\Debug\net6.0\ServerClasses.dll
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\bin\Debug\net6.0\ServerClasses.pdb
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\bin\Debug\net6.0\NetModelsLibrary.dll
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\bin\Debug\net6.0\ServerDatabase.dll
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\bin\Debug\net6.0\NetModelsLibrary.pdb
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\bin\Debug\net6.0\ServerDatabase.pdb
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.csproj.AssemblyReference.cache
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.GeneratedMSBuildEditorConfig.editorconfig
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.AssemblyInfoInputs.cache
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.AssemblyInfo.cs
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.csproj.CoreCompileInputs.cache
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.csproj.CopyComplete
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.dll
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\refint\ServerClasses.dll
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ServerClasses.pdb
+D:\OneDrive - ITSTEP\Projects\User-Chat\ServerClasses\obj\Debug\net6.0\ref\ServerClasses.dll

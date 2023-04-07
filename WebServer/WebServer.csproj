@@ -6,4 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NetModelsLibrary\NetModelsLibrary.csproj" />
+    <ProjectReference Include="..\ServerClasses\ServerClasses.csproj" />
+    <ProjectReference Include="..\ServerDatabase\ServerDatabase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Chat" />
+  </ItemGroup>
+
 </Project>

@@ -38,7 +38,7 @@ namespace UserApp.ViewModels
             }
             Connection.Network.WriteRequest(NetModelsLibrary.RequestType.CreateChat);
             Connection.Network.WriteObject(ChatCreationModel);
-            if (Connection.Network.ReadObject<NetModelsLibrary.Models.ResoultModel>().Success) ChatCreated?.Invoke();
+            if (Connection.Network.ReadObject<NetModelsLibrary.Models.ResultModel>().Success) ChatCreated?.Invoke();
 
             MainWindow.OverlayGrid.HideAll();
             AddedUsers.Clear();

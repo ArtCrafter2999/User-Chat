@@ -28,17 +28,17 @@ namespace UserApp.ViewModels
             resoulter.Success += Success;
             resoulter.Failure += Failure;
         }
-        private void Failure(ResoultModel resoult)
+        private void Failure(ResultModel result)
         {
             Hide();
             FailureVisibility = true;
-            FailureText = resoult.Message;
+            FailureText = result.Message;
         }
-        private void Success(NetModelsLibrary.Models.ResoultModel resoult)
+        private void Success(NetModelsLibrary.Models.ResultModel result)
         {
             Hide();
             SuccessVisibility = true;
-            SuccessText = resoult.Message;
+            SuccessText = result.Message;
         }
     }
 }

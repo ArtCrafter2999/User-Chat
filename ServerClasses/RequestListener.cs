@@ -15,7 +15,7 @@ namespace ServerClasses
         public IClient Client { get; set; }
         public IRequestResponse Respondent { get; set; }
         public IRequestListener Listener { get; set; }
-        public IClientsNotifyer Notifyer { get; set; }
+        public IClientsNotifyer Notifier { get; set; }
         public IRequestHandler Handler { get; set; }
 
 

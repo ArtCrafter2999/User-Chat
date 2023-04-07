@@ -16,7 +16,7 @@ namespace ServerClasses
         public IClient Client { get; set; }
         public IRequestResponse Respondent { get; set; }
         public IRequestListener Listener { get; set; }
-        public IClientsNotifyer Notifyer { get; set; }
+        public IClientsNotifyer Notifier { get; set; }
         public IRequestHandler Handler { get; set; }
 
         public void Bind(IRequestTypeEvents events)
@@ -147,7 +147,7 @@ namespace ServerClasses
                         }
                     }
                     db.SaveChanges();
-                    Notifyer.ChatChanged(chat, addedUsers, removedUsers, notChangedUsers);
+                    Notifier.ChatChanged(chat, addedUsers, removedUsers, notChangedUsers);
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace ServerClasses
                 }
                 db.SaveChanges();
 
-                Notifyer.ChatCreated(db.Chats
+                Notifier.ChatCreated(db.Chats
                     .Include(o => o.Users)
                     .First(o => o.Id == chat.Id));
 
@@ -223,7 +223,7 @@ namespace ServerClasses
                     }
                     db.Chats.Remove(chat);
                     db.SaveChanges();
-                    Notifyer.ChatDeleted(model.Id, users);
+                    Notifier.ChatDeleted(model.Id, users);
                 }
             }
         }
@@ -367,7 +367,7 @@ namespace ServerClasses
                     }
                     db.SaveChanges();
                     var chat = db.Chats.Include(c => c.Users).First(c => c.Id == model.ChatId);
-                    Notifyer.MessageSended(message, chat);
+                    Notifier.MessageSended(message, chat);
                 }
             }
             catch (OperationFailureExeption)

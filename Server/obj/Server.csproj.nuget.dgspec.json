@@ -1,35 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\User-Chat\\Server\\Server.csproj": {}
+    "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\Server\\Server.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
+    "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
+        "projectUniqueName": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
         "projectName": "NetModelsLibrary",
-        "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\obj\\",
+        "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
-                "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
+              "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
+                "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
               }
             }
           }
@@ -49,48 +47,61 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Admin\\.dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj": {
+    "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj",
+        "projectUniqueName": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj",
         "projectName": "ServerClasses",
-        "projectPath": "D:\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\User-Chat\\ServerClasses\\obj\\",
+        "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerClasses\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
-                "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj"
+              "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
+                "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj"
               },
-              "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
-                "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
+              "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
+                "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
               }
             }
           }
@@ -110,37 +121,50 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Admin\\.dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
+    "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
+        "projectUniqueName": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
         "projectName": "ServerDatabase",
-        "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\User-Chat\\ServerDatabase\\obj\\",
+        "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -161,7 +185,7 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[6.0.7, )"
+              "version": "[8.0.0-preview.2.23128.3, )"
             }
           },
           "imports": [
@@ -170,51 +194,64 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Admin\\.dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Projects\\User-Chat\\Server\\Server.csproj": {
+    "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\User-Chat\\Server\\Server.csproj",
+        "projectUniqueName": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "D:\\Projects\\User-Chat\\Server\\Server.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\User-Chat\\Server\\obj\\",
+        "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\Server\\Server.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
-                "projectPath": "D:\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj"
+              "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj": {
+                "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\NetModelsLibrary\\NetModelsLibrary.csproj"
               },
-              "D:\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj": {
-                "projectPath": "D:\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj"
+              "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj": {
+                "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerClasses\\ServerClasses.csproj"
               },
-              "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
-                "projectPath": "D:\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
+              "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj": {
+                "projectPath": "D:\\OneDrive - ITSTEP\\Projects\\User-Chat\\ServerDatabase\\ServerDatabase.csproj"
               }
             }
           }
@@ -234,16 +271,35 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.14, 6.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Admin\\.dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

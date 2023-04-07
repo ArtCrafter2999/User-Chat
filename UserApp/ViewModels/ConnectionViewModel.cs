@@ -36,11 +36,11 @@ namespace UserApp.ViewModels
                     Connection.Stream,
                     Connection.NetworkCancelation.Token);
                 Connection.IsConnected = true;
-                Invoke(new ResoultModel(true, "Підключення до серверу встановлено"));
+                Invoke(new ResultModel(true, "Підключення до серверу встановлено"));
             }
             catch (Exception)
             {
-                Invoke(new ResoultModel(false, "Сервер вимкнений або його немає за даною адресою"));
+                Invoke(new ResultModel(false, "Сервер вимкнений або його немає за даною адресою"));
             }
         });
         public event PropertyChangedEventHandler? PropertyChanged;

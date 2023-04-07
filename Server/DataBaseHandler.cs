@@ -107,7 +107,7 @@ namespace Server
                     throw new OperationFailureExeption($"Login '{model.Login}' is alrady exist, request rejected");
                 }
             }
-            network.WriteObject(new ResoultModel(RequestType.Registration, true, "You registered successfuly"));
+            network.WriteObject(new ResultModel(RequestType.Registration, true, "You registered successfuly"));
             Console.WriteLine($"{User.Login}({User.Id}) registration successfuly");
             UserOnline();
         }
@@ -129,7 +129,7 @@ namespace Server
                     throw new OperationFailureExeption($"Incorrect login or password (а конкретно {(user == null ? "логін" : "пароль")})");
                 }
             }
-            network.WriteObject(new ResoultModel(RequestType.Auth, true, "You authorized successfuly"));
+            network.WriteObject(new ResultModel(RequestType.Auth, true, "You authorized successfuly"));
             Console.WriteLine($"{User.Login}({User.Id}) authorization successfuly");
             UserOnline();
         }
@@ -323,7 +323,7 @@ namespace Server
                 });
                 Console.WriteLine($"{User.Login}({User.Id})'s Chat created for {model.Users.Count} users");
             }
-            network.WriteObject(new ResoultModel(RequestType.CreateChat, true, "You successfuly created a new chat"));
+            network.WriteObject(new ResultModel(RequestType.CreateChat, true, "You successfuly created a new chat"));
         }
 
         public void SearchUsers(SearchModel model)

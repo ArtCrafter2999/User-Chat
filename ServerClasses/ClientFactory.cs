@@ -9,7 +9,7 @@ namespace ServerClasses
         public IClient Client { get; set; }
         public IRequestResponse Respondent { get; set; }
         public IRequestListener Listener { get; set; }
-        public IClientsNotifyer Notifyer { get; set; }
+        public IClientsNotifyer Notifier { get; set; }
         public IRequestHandler Handler { get; set; }
 
         public IClient MakeClient()
@@ -18,7 +18,7 @@ namespace ServerClasses
             list.Add(Client ?? throw new Exception("Client не має значення"));
             list.Add(Respondent ?? throw new Exception("Respondent не має значення"));
             list.Add(Listener ?? throw new Exception("Listener не має значення"));
-            list.Add(Notifyer ?? throw new Exception("Notifyer не має значення"));
+            list.Add(Notifier ?? throw new Exception("Notifyer не має значення"));
             list.Add(Handler ?? throw new Exception("Handler не має значення"));
             Handler.Bind(Listener);
 
@@ -29,7 +29,7 @@ namespace ServerClasses
                 clientModel.Client = Client;
                 clientModel.Respondent = Respondent;
                 clientModel.Listener = Listener;
-                clientModel.Notifyer = Notifyer;
+                clientModel.Notifier = Notifier;
                 clientModel.Handler = Handler;
             }
             return Client;

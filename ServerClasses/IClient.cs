@@ -12,7 +12,7 @@ namespace ServerClasses
 
         public event Action<User> OnDisconected;
 
-        ClientObject GetOnlineUser(int userId);
+        IClient GetOnlineUser(int userId);
         bool IsUserOnline(int userId);
         public void Disconect();
         public void UserOnline();

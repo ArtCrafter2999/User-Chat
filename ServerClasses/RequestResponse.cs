@@ -14,7 +14,7 @@ namespace ServerClasses
         public IClient Client { get; set; }
         public IRequestResponse Respondent { get; set; }
         public IRequestListener Listener { get; set; }
-        public IClientsNotifyer Notifyer { get; set; }
+        public IClientsNotifyer Notifier { get; set; }
         public IRequestHandler Handler { get; set; }
         public INetwork Network { get; set; }
 
@@ -101,12 +101,12 @@ namespace ServerClasses
         public void ResponseFailure(RequestType type, string message)
         {
             OnFailure?.Invoke(type, message);
-            Network.WriteObject(new ResoultModel(type, false, message));
+            Network.WriteObject(new ResultModel(type, false, message));
         }
         public void ResponseSuccess(RequestType type, string message)
         {
             OnSuccess?.Invoke(type, message);
-            Network.WriteObject(new ResoultModel(type, true, message));
+            Network.WriteObject(new ResultModel(type, true, message));
         }
 
         public void ResponseMessagePage(int from, IEnumerable<Message> messages)

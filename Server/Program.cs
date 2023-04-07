@@ -25,7 +25,7 @@ try
             Respondent = new RequestResponse(),
             Handler = new RequestHandler(),
             Client = new ServerClasses.ClientObject(tcpclient),
-            Notifyer = new ClientsNotifyer()
+            Notifier = new ClientsNotifyer()
         };
         factory.Respondent.OnSuccess += consoleinput.OnSuccess;
         factory.Respondent.OnFailure += consoleinput.OnFailure;

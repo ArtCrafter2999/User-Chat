@@ -9,9 +9,9 @@ namespace UserApp.ViewModels
 {
     public abstract class NetworkResoulter
     {
-        public event Action<ResoultModel>? Success;
-        public event Action<ResoultModel>? Failure;
-        public void Invoke(ResoultModel model)
+        public event Action<ResultModel>? Success;
+        public event Action<ResultModel>? Failure;
+        public void Invoke(ResultModel model)
         {
             if (model.Success)
             {

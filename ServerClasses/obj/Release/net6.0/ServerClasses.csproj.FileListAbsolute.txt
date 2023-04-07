@@ -1,0 +1,17 @@
+D:\Projects\User-Chat\ServerClasses\bin\Release\net6.0\ServerClasses.deps.json
+D:\Projects\User-Chat\ServerClasses\bin\Release\net6.0\ServerClasses.dll
+D:\Projects\User-Chat\ServerClasses\bin\Release\net6.0\ServerClasses.pdb
+D:\Projects\User-Chat\ServerClasses\bin\Release\net6.0\NetModelsLibrary.dll
+D:\Projects\User-Chat\ServerClasses\bin\Release\net6.0\ServerDatabase.dll
+D:\Projects\User-Chat\ServerClasses\bin\Release\net6.0\NetModelsLibrary.pdb
+D:\Projects\User-Chat\ServerClasses\bin\Release\net6.0\ServerDatabase.pdb
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.csproj.AssemblyReference.cache
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.AssemblyInfoInputs.cache
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.AssemblyInfo.cs
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.csproj.CoreCompileInputs.cache
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.csproj.CopyComplete
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.dll
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\refint\ServerClasses.dll
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ServerClasses.pdb
+D:\Projects\User-Chat\ServerClasses\obj\Release\net6.0\ref\ServerClasses.dll

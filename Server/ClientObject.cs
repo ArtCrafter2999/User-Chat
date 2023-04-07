@@ -96,7 +96,7 @@ namespace Server
                         }
                         catch (OperationFailureExeption ex)
                         {
-                            network.WriteObject(new ResoultModel(ex.RequestType, false, ex.Message));
+                            network.WriteObject(new ResultModel(ex.RequestType, false, ex.Message));
                             Console.WriteLine(ex.Message);
                         }
                         catch (InvalidOperationException ex)

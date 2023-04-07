@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerDatabase", "ServerDat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApp", "UserApp\UserApp.csproj", "{912E6AC7-5C38-4C33-87FE-3CF596E752D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServer", "WebServer\WebServer.csproj", "{DCA99302-5897-4C2C-90EE-FA6665794F77}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerClasses", "ServerClasses\ServerClasses.csproj", "{39FB2DA1-F763-45DC-A226-7B48C8BCA2A5}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{912E6AC7-5C38-4C33-87FE-3CF596E752D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{912E6AC7-5C38-4C33-87FE-3CF596E752D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{912E6AC7-5C38-4C33-87FE-3CF596E752D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DCA99302-5897-4C2C-90EE-FA6665794F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCA99302-5897-4C2C-90EE-FA6665794F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCA99302-5897-4C2C-90EE-FA6665794F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCA99302-5897-4C2C-90EE-FA6665794F77}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39FB2DA1-F763-45DC-A226-7B48C8BCA2A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39FB2DA1-F763-45DC-A226-7B48C8BCA2A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39FB2DA1-F763-45DC-A226-7B48C8BCA2A5}.Release|Any CPU.ActiveCfg = Release|Any CPU

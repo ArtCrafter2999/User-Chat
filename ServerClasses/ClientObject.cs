@@ -15,11 +15,11 @@ namespace ServerClasses
         public INetwork Network { get; set; }
         public IRequestResponse Respondent { get; set; }
         public IRequestListener Listener { get; set; }
-        public IClientsNotifyer Notifyer { get; set; }
+        public IClientsNotifyer Notifier { get; set; }
         public IRequestHandler Handler { get; set; }
         public IClient Client { get; set; }
 
-        private static Dictionary<int, ClientObject> UsersOnline { get; set; } = new Dictionary<int, ClientObject>();
+        public static Dictionary<int, ClientObject> UsersOnline { get; set; } = new Dictionary<int, ClientObject>();
         public const int PageSize = 20;
 
         public TcpClient TcpClient { get; set; }
@@ -63,7 +63,7 @@ namespace ServerClasses
             try
             {
                 UsersOnline.Add(User.Id, this);
-                Notifyer.UserChangeStatus();
+                Notifier.UserChangeStatus();
             }
             catch { }
         }
@@ -77,12 +77,12 @@ namespace ServerClasses
                     User.LastOnline = DateTime.Now;
                     db.SaveChanges();
                 }
-                Notifyer.UserChangeStatus();
+                Notifier.UserChangeStatus();
             }
             catch{}
         }
 
-        public ClientObject GetOnlineUser(int userId)
+        public IClient GetOnlineUser(int userId)
         {
             return UsersOnline[userId];
         }

@@ -1,0 +1,35 @@
+﻿@model NetModelsLibrary.Models.UserCreationModel
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>UserChat</title>
+</head>
+<body>
+
+<div class="row">
+  	<div>
+    	<h2>Ауторизація</h2>
+    	<form asp-action="Registration" asp-controller="Home" method="post">
+			<div>
+				<label asp-for="Login">Логін</label>
+				<input asp-for="Login" />
+			</div>
+			<div>
+				<label asp-for="PasswordMD5">Пароль</label>
+				<input asp-for="PasswordMD5" />
+			</div>
+			<div>
+				<label asp-for="Name">Ім'я</label>
+				<input asp-for="Name" />
+			</div>
+	        <div>
+		        <input type="submit"/>
+	        </div>
+		</form>
+  	</div>
+</div>
+
+</body>
+</html>
+
